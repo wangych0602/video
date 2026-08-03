@@ -3,8 +3,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse, FileResponse
+from django.conf import settings
+import os
 
-from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation
+from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport
 from .serializers import (
     ClassAnalysisTaskSerializer,
     CreateAnalysisTaskSerializer,
@@ -22,7 +25,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
-        
+
         # 普通用户只能看到自己的任务
         if not user.is_staff:
             queryset = queryset.filter(teacher=user)
@@ -101,7 +104,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     def get_transcript(self, request, pk=None):
         # 获取课堂文字稿
         task = self.get_object()
-        
+
         try:
             result = task.result
             return Response({
@@ -120,7 +123,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     def get_keywords(self, request, pk=None):
         # 获取关键词和知识点
         task = self.get_object()
-        
+
         try:
             result = task.result
             return Response({
@@ -138,7 +141,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     def get_evaluation(self, request, pk=None):
         # 获取教学评价结果
         task = self.get_object()
-        
+
         try:
             evaluation = task.evaluation
             return Response({
@@ -175,7 +178,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     def get_score(self, request, pk=None):
         # 获取评分数据
         task = self.get_object()
-        
+
         try:
             evaluation = task.evaluation
             return Response({
@@ -216,25 +219,90 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
+    @action(detail=True, methods=['get'], url_path='report')
+    def get_report(self, request, pk=None):
+        # 获取分析报告
+        task = self.get_object()
+
+        try:
+            report = task.report
+            return Response({
+                'task_id': task.id,
+                'report_id': report.id,
+                'title': report.title,
+                'summary': report.summary,
+                'teacher_report': report.teacher_report,
+                'school_report': report.school_report,
+                'html_content': report.html_content,
+                'has_pdf': bool(report.pdf_file),
+                'pdf_url': report.pdf_file.url if report.pdf_file else '',
+                'download_count': report.download_count,
+                'created_time': report.created_time,
+            })
+        except AIReport.DoesNotExist:
+            # 尝试从 AIAnalysisResult 中获取基本信息
+            try:
+                result = task.result
+                return Response({
+                    'task_id': task.id,
+                    'title': '课堂分析报告',
+                    'summary': {
+                        'overall_score': result.teaching_score,
+                        'strengths': result.improvement_suggestions[:3] if result.improvement_suggestions else [],
+                    },
+                    'has_pdf': False,
+                    'pdf_url': '',
+                    'note': '完整报告正在生成中',
+                })
+            except AIAnalysisResult.DoesNotExist:
+                return Response(
+                    {'error': '报告不存在'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+    @action(detail=True, methods=['get'], url_path='report/pdf')
+    def get_report_pdf(self, request, pk=None):
+        # 下载PDF报告
+        task = self.get_object()
+
+        try:
+            report = task.report
+            
+            if not report.pdf_file:
+                return Response(
+                    {'error': 'PDF文件不存在'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            # 增加下载次数
+            report.download_count += 1
+            report.save(update_fields=['download_count'])
+            
+            # 返回文件
+            response = FileResponse(report.pdf_file.open('rb'))
+            response['Content-Type'] = 'application/pdf'
+            response['Content-Disposition'] = f'attachment; filename="report_{task.id}.pdf"'
+            return response
+            
+        except AIReport.DoesNotExist:
+            return Response(
+                {'error': '报告不存在'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
     @action(detail=True, methods=['post'], url_path='retry')
     def retry_task(self, request, pk=None):
         # 重试任务
         task = self.get_object()
-        
+
         # 重置状态
         task.status = ClassAnalysisTask.STATUS_PENDING
         task.progress = 0
         task.current_step = '等待中'
         task.error_message = ''
         task.save()
-        
-        # 删除旧结果
-        if hasattr(task, 'result'):
-            task.result.delete()
-        if hasattr(task, 'evaluation'):
-            task.evaluation.delete()
-        
-        # 重新执行
+
+        # 重新执行任务
         if HAS_CELERY:
             try:
                 run_analysis_task.delay(task.id)
@@ -242,8 +310,12 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
                 run_analysis_task_sync(task.id)
         else:
             run_analysis_task_sync(task.id)
-        
-        return Response(ClassAnalysisTaskSerializer(task).data)
+
+        return Response({
+            'id': task.id,
+            'status': task.status,
+            'message': '任务已重新开始',
+        })
 
 
 class AIAnalysisResultViewSet(viewsets.ReadOnlyModelViewSet):
@@ -254,7 +326,8 @@ class AIAnalysisResultViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
-        
+
+        # 普通用户只能看到自己的结果
         if not user.is_staff:
             queryset = queryset.filter(task__teacher=user)
 
@@ -265,17 +338,3 @@ class AIModelConfigViewSet(viewsets.ModelViewSet):
     queryset = AIModelConfig.objects.all()
     serializer_class = AIModelConfigSerializer
     permission_classes = [IsAdminUser]
-
-    def get_queryset(self):
-        return super().get_queryset().order_by('priority', '-created_time')
-
-    @action(detail=False, methods=['get'], url_path='active')
-    def get_active_config(self, request):
-        # 获取当前启用的配置
-        config = AIModelConfig.objects.filter(is_active=True).first()
-        if config:
-            return Response(AIModelConfigSerializer(config).data)
-        return Response(
-            {'error': '没有启用的AI模型配置'},
-            status=status.HTTP_404_NOT_FOUND
-        )

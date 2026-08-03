@@ -1,12 +1,14 @@
-Django==6.0.7
-django-simpleui==2026.1.13
-djangorestframework==3.17.1
+﻿Django==6.0.7
+djangorestframework==3.15.2
+django-cors-headers==4.6.0
+django-filter==24.3
 Pillow==12.3.0
 psycopg[binary]==3.2.9
 gunicorn==23.0.0
 dj-database-url==2.3.0
 redis==5.2.1
 mutagen==1.48.1
+reportlab==4.2.5
 
 # Celery (optional, for async tasks)
 celery==5.4.0

@@ -375,6 +375,83 @@ class TeachingEvaluation(models.Model):
         return f'教学评价 - {self.task.id} - {self.grade}'
 
 
+class AIReport(models.Model):
+    # AI分析报告
+    task = models.OneToOneField(
+        ClassAnalysisTask,
+        on_delete=models.CASCADE,
+        related_name='report',
+        verbose_name=_('分析任务')
+    )
+    
+    # 报告标题
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        default='',
+        verbose_name=_('报告标题')
+    )
+    
+    # 课堂总结
+    summary = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('课堂总结')
+    )
+    
+    # 教师报告
+    teacher_report = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('教师报告')
+    )
+    
+    # 学校报告
+    school_report = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('学校报告')
+    )
+    
+    # PDF文件
+    pdf_file = models.FileField(
+        upload_to='reports/',
+        null=True,
+        blank=True,
+        verbose_name=_('PDF文件')
+    )
+    
+    # HTML内容
+    html_content = models.TextField(
+        blank=True,
+        default='',
+        verbose_name=_('HTML内容')
+    )
+    
+    # 下载次数
+    download_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('下载次数')
+    )
+    
+    created_time = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('创建时间')
+    )
+    updated_time = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('更新时间')
+    )
+
+    class Meta:
+        verbose_name = _('分析报告')
+        verbose_name_plural = _('分析报告')
+        ordering = ['-created_time']
+
+    def __str__(self):
+        return f'分析报告 - {self.task.id} - {self.title}'
+
+
 class AIModelConfig(models.Model):
     # AI模型配置
     PROVIDER_OPENAI = 'openai'
