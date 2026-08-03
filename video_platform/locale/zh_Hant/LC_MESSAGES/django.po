@@ -343,3 +343,12 @@ msgstr "預設語言"
 
 msgid "推流直播"
 msgstr "推流直播"
+
+msgid "Footer 文字"
+msgstr "Footer 文字"
+
+msgid "版权信息"
+msgstr "版權資訊"
+
+msgid "ICP备案号"
+msgstr "ICP備案號"

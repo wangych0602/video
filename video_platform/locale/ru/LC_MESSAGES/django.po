@@ -343,3 +343,12 @@ msgstr "Язык по умолчанию"
 
 msgid "推流直播"
 msgstr "Прямой эфир"
+
+msgid "Footer 文字"
+msgstr "Текст подвала"
+
+msgid "版权信息"
+msgstr "Авторские права"
+
+msgid "ICP备案号"
+msgstr "Регистрационный номер ICP"

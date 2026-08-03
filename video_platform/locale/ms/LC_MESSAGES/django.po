@@ -343,3 +343,12 @@ msgstr "Bahasa lalai"
 
 msgid "推流直播"
 msgstr "Siaran langsung"
+
+msgid "Footer 文字"
+msgstr "Teks Footer"
+
+msgid "版权信息"
+msgstr "Hak Cipta"
+
+msgid "ICP备案号"
+msgstr "No. Pendaftaran ICP"

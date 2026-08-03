@@ -343,3 +343,12 @@ msgstr "기본 언어"
 
 msgid "推流直播"
 msgstr "라이브 방송"
+
+msgid "Footer 文字"
+msgstr "푸터 텍스트"
+
+msgid "版权信息"
+msgstr "저작권 정보"
+
+msgid "ICP备案号"
+msgstr "ICP 등록 번호"

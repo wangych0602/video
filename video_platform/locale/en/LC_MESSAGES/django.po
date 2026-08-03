@@ -343,3 +343,12 @@ msgstr "Default Language"
 
 msgid "推流直播"
 msgstr "Push Live"
+
+msgid "Footer 文字"
+msgstr "Footer Text"
+
+msgid "版权信息"
+msgstr "Copyright"
+
+msgid "ICP备案号"
+msgstr "ICP Filing No."

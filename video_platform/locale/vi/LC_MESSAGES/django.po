@@ -343,3 +343,12 @@ msgstr "Ngôn ngữ mặc định"
 
 msgid "推流直播"
 msgstr "Phát trực tiếp"
+
+msgid "Footer 文字"
+msgstr "Văn bản chân trang"
+
+msgid "版权信息"
+msgstr "Bản quyền"
+
+msgid "ICP备案号"
+msgstr "Số đăng ký ICP"
