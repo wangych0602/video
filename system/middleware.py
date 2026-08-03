@@ -22,14 +22,50 @@ class SiteConfigMiddleware:
         
         response = self.get_response(request)
         
-        # Inject custom CSS into admin pages
+        # Inject custom JS and CSS into admin pages
         if request.path.startswith('/admin/') and response.get('Content-Type', '').startswith('text/html'):
-            css_link = b'<link rel="stylesheet" type="text/css" href="/static/admin/css/custom.css">'
+            custom_html = '''
+<style>
+.logo img, .brand img, .el-aside img[src*="media/site"] {
+    max-height: 50px !important;
+    height: 50px !important;
+    width: auto !important;
+}
+.logo, .brand {
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.icon-home .icon-item {
+    width: 120px !important;
+    height: 100px !important;
+}
+.icon-home .icon-item i {
+    font-size: 36px !important;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var logos = document.querySelectorAll('.logo img, .brand img, .el-aside img');
+    logos.forEach(function(img) {
+        var src = img.src || '';
+        var alt = (img.alt || '').toLowerCase();
+        if (src.indexOf('logo') > -1 || src.indexOf('site') > -1 || alt.indexOf('logo') > -1) {
+            img.style.maxHeight = '50px';
+            img.style.height = '50px';
+            img.style.width = 'auto';
+        }
+    });
+});
+</script>
+'''
+            custom_code = custom_html.encode('utf-8')
             if hasattr(response, 'content'):
                 try:
                     content = response.content
                     if b'</head>' in content:
-                        response.content = content.replace(b'</head>', css_link + b'</head>', 1)
+                        response.content = content.replace(b'</head>', custom_code + b'</head>', 1)
                         if 'Content-Length' in response:
                             response['Content-Length'] = str(len(response.content))
                 except Exception:
