@@ -66,24 +66,7 @@ onMounted(async () => {
 
 <template>
   <div class="home-page">
-    <section class="home-banner">
-      <img v-if="bannerImage" :src="bannerImage" alt="" class="banner-image" />
-      <div class="banner-glow glow-a" />
-      <div class="banner-glow glow-b" />
-      <div class="banner-content">
-        <span class="banner-tag"><Sparkles :size="14" /> {{ t('home.bannerTag') }}</span>
-        <h1>{{ t('home.bannerTitle') }}</h1>
-        <p>{{ t('home.bannerDesc') }}</p>
-        <div class="banner-actions">
-          <router-link to="/videos" class="banner-btn primary">
-            {{ t('home.browseCourses') }} <ArrowRight :size="16" />
-          </router-link>
-          <router-link to="/live" class="banner-btn ghost">
-            <Radio :size="16" /> {{ t('home.enterLive') }}
-          </router-link>
-        </div>
-      </div>
-    </section>
+
 
     <div class="top-row">
       <section class="home-section">
