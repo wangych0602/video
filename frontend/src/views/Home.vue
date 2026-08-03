@@ -218,13 +218,7 @@ onMounted(async () => {
       <el-empty v-else :description="t('home.emptyLive')" />
     </section>
 
-    <footer class="home-footer">
-      <div class="footer-inner">
-        <h3>{{ site.site_name || t('app.brand') }}</h3>
-        <p>{{ site.footer_description || t('home.bannerDesc') }}</p>
-        <span v-if="site.footer_copyright">{{ site.footer_copyright }}</span>
-      </div>
-    </footer>
+
   </div>
 </template>
 
