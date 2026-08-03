@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "Alamat tonton HLS"
+
+msgid "IP地址"
+msgstr "Alamat IP"
+
+msgid "MAC地址"
+msgstr "Alamat MAC"
+
+msgid "RTMP推流地址"
+msgstr "Alamat tolak RTMP"
+
+msgid "一次性推流令牌"
+msgstr "Token"
+
+msgid "上传中"
+msgstr "Sedang memuat naik"
+
+msgid "专辑名称"
+msgstr "Nama album"
+
+msgid "专辑封面"
+msgstr "Kulit album"
+
+msgid "专辑简介"
+msgstr "Penerangan album"
+
+msgid "令牌已使用"
+msgstr "Digunakan"
+
+msgid "允许注册"
+msgstr "Benarkan pendaftaran"
+
+msgid "全局默认视频封面"
+msgstr "Kulit video lalai global"
+
+msgid "分类"
+msgstr "Kategori"
+
+msgid "分类名称"
+msgstr "Nama kategori"
+
+msgid "分辨率"
+msgstr "Resolusi"
+
+msgid "创建时间"
+msgstr "Masa dicipta"
+
+msgid "厂商"
+msgstr "Pengilang"
+
+msgid "取消"
+msgstr "Batal"
+
+msgid "后台批量审核通过"
+msgstr "Diluluskan secara pukal dari admin"
+
+msgid "后台批量拒绝"
+msgstr "Ditolak secara pukal dari admin"
+
+msgid "启动中"
+msgstr "Sedang bermula"
+
+msgid "固件版本"
+msgstr "Versi perisian tegar"
+
+msgid "在线"
+msgstr "Dalam talian"
+
+msgid "型号"
+msgstr "Model"
+
+msgid "头像"
+msgstr "Avatar"
+
+msgid "学校"
+msgstr "Sekolah"
+
+msgid "学校管理员"
+msgstr "Pentadbir sekolah"
+
+msgid "学生"
+msgstr "Pelajar"
+
+msgid "安装位置"
+msgstr "Lokasi pemasangan"
+
+msgid "审核人"
+msgstr "Penyemak"
+
+msgid "审核意见"
+msgstr "Ulasan semakan"
+
+msgid "审核记录"
+msgstr "Log semakan"
+
+msgid "封面图"
+msgstr "Gambar kulit"
+
+msgid "已停止"
+msgstr "Dihentikan"
+
+msgid "已创建"
+msgstr "Dicipta"
+
+msgid "已发布"
+msgstr "Diterbitkan"
+
+msgid "已审核"
+msgstr "Diluluskan"
+
+msgid "已拒绝"
+msgstr "Ditolak"
+
+msgid "已结束"
+msgstr "Tamat"
+
+msgid "开始时间"
+msgstr "Masa mula"
+
+msgid "异常"
+msgstr "Ralat"
+
+msgid "录制中"
+msgstr "Sedang merakam"
+
+msgid "录播主机"
+msgstr "Hos rakaman"
+
+msgid "待审核"
+msgstr "Menunggu kelulusan"
+
+msgid "待开播"
+msgstr "Dijadualkan"
+
+msgid "所属学校"
+msgstr "Sekolah"
+
+msgid "所属教学楼"
+msgstr "Bangunan"
+
+msgid "批量发布"
+msgstr "Terbit pilihan"
+
+msgid "批量审核通过"
+msgstr "Lulus pilihan"
+
+msgid "批量拒绝"
+msgstr "Tolak pilihan"
+
+msgid "拒绝"
+msgstr "Tolak"
+
+msgid "推流密钥"
+msgstr "Kunci strim"
+
+msgid "描述"
+msgstr "Penerangan"
+
+msgid "提示"
+msgstr "Peringatan"
+
+msgid "摄像头"
+msgstr "Kamera"
+
+msgid "操作"
+msgstr "Tindakan"
+
+msgid "教学楼"
+msgstr "Bangunan"
+
+msgid "教学楼名称"
+msgstr "Nama bangunan"
+
+msgid "教室"
+msgstr "Bilik darjah"
+
+msgid "教室名称"
+msgstr "Nama bilik darjah"
+
+msgid "教师"
+msgstr "Guru"
+
+msgid "教师资料"
+msgstr "Profil guru"
+
+msgid "文件大小"
+msgstr "Saiz fail"
+
+msgid "无"
+msgstr "Tiada"
+
+msgid "更新时间"
+msgstr "Masa dikemas kini"
+
+msgid "最后在线时间"
+msgstr "Masa terakhir dalam talian"
+
+msgid "权限控制"
+msgstr "Kebenaran"
+
+msgid "标题"
+msgstr "Tajuk"
+
+msgid "状态"
+msgstr "Status"
+
+msgid "用户"
+msgstr "Pengguna"
+
+msgid "直播"
+msgstr "Siaran langsung"
+
+msgid "直播中"
+msgstr "Sedang siaran langsung"
+
+msgid "直播会话"
+msgstr "Sesi siaran langsung"
+
+msgid "直播标题"
+msgstr "Tajuk siaran langsung"
+
+msgid "直播状态"
+msgstr "Status siaran langsung"
+
+msgid "直播间"
+msgstr "Bilik siaran langsung"
+
+msgid "直播间名称"
+msgstr "Nama bilik siaran"
+
+msgid "确定"
+msgstr "Sahkan"
+
+msgid "离线"
+msgstr "Luar talian"
+
+msgid "科目"
+msgstr "Mata pelajaran"
+
+msgid "站点名称"
+msgstr "Nama laman"
+
+msgid "站点描述"
+msgstr "Penerangan laman"
+
+msgid "简介"
+msgstr "Biografi"
+
+msgid "管理员"
+msgstr "Pentadbir"
+
+msgid "系统设置"
+msgstr "Tetapan sistem"
+
+msgid "终端"
+msgstr "Terminal"
+
+msgid "结束时间"
+msgstr "Masa tamat"
+
+msgid "联系邮箱"
+msgstr "E-mel hubungan"
+
+msgid "草稿"
+msgstr "Draf"
+
+msgid "视频"
+msgstr "Video"
+
+msgid "视频专辑"
+msgstr "Album video"
+
+msgid "视频分类"
+msgstr "Kategori video"
+
+msgid "视频文件"
+msgstr "Fail video"
+
+msgid "视频时长"
+msgstr "Tempoh video"
+
+msgid "视频设置"
+msgstr "Tetapan video"
+
+msgid "角色"
+msgstr "Peranan"
+
+msgid "设备"
+msgstr "Peranti"
+
+msgid "设备SN"
+msgstr "SN peranti"
+
+msgid "设备令牌"
+msgstr "Token peranti"
+
+msgid "设备名称"
+msgstr "Nama peranti"
+
+msgid "设备类型"
+msgstr "Jenis peranti"
+
+msgid "设置ID"
+msgstr "ID tetapan"
+
+msgid "评价"
+msgstr "Ulasan"
+
+msgid "评分"
+msgstr "Penilaian"
+
+msgid "评论"
+msgstr "Komen"
+
+msgid "通过"
+msgstr "Diluluskan"
+
+msgid "音箱"
+msgstr "Pembesar suara"
+
+msgid "预约时间"
+msgstr "Masa janji temu"
+
+msgid "麦克风"
+msgstr "Mikrofon"
+
+msgid "默认语言"
+msgstr "Bahasa lalai"
+
+
+msgid "推流直播"
+msgstr "Siaran langsung"

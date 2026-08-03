@@ -1,0 +1,106 @@
+﻿services:
+  nginx:
+    image: nginx:alpine
+    container_name: video-prod-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/prod-gateway.conf:/etc/nginx/conf.d/default.conf:ro
+      - media-data:/app/media:ro
+      - static-data:/app/staticfiles:ro
+    depends_on:
+      - backend
+      - frontend
+      - rtmp-server
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile.prod
+    container_name: video-prod-backend
+    restart: unless-stopped
+    environment:
+      DJANGO_SETTINGS_MODULE: video_platform.settings_prod
+      SECRET_KEY: ${SECRET_KEY:-dev-only-change-me}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DATABASE_URL: ${DATABASE_URL:-postgres://video:video123456@postgres:5432/video_platform}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      MEDIA_URL: ${MEDIA_URL:-/media/}
+      STATIC_URL: ${STATIC_URL:-/static/}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-http://localhost,http://127.0.0.1}
+      RTMP_SERVER_URL: ${RTMP_SERVER_URL:-rtmp://localhost:1935}
+      HLS_SERVER_URL: ${HLS_SERVER_URL:-http://localhost}
+      STORAGE_BACKEND: ${STORAGE_BACKEND:-django.core.files.storage.FileSystemStorage}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+      SECURE_SSL_REDIRECT: ${SECURE_SSL_REDIRECT:-false}
+    volumes:
+      - media-data:/app/media
+      - static-data:/app/staticfiles
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: video-prod-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: video-prod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-video_platform}
+      POSTGRES_USER: ${POSTGRES_USER:-video}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-video123456}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: video-prod-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rtmp-server:
+    image: tiangolo/nginx-rtmp:latest
+    container_name: video-prod-rtmp
+    restart: unless-stopped
+    ports:
+      - "1935:1935"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - hls-data:/tmp/hls
+    depends_on:
+      - backend
+
+volumes:
+  media-data:
+  static-data:
+  hls-data:
+  redis-data:
+  postgres-data:

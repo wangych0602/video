@@ -1,0 +1,58 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 600" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#0a1426"/>
+      <stop offset="50%" stop-color="#112240"/>
+      <stop offset="100%" stop-color="#0a1426"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.85" cy="0.15" r="0.5" fx="0.85" fy="0.15">
+      <stop offset="0%" stop-color="#1abc9c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#1abc9c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.15" cy="0.85" r="0.5" fx="0.15" fy="0.85">
+      <stop offset="0%" stop-color="#d97706" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="80" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="gridPattern" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="600" fill="url(#bgGrad)"/>
+  <rect width="1920" height="600" fill="url(#gridPattern)"/>
+  <circle cx="1632" cy="90" r="320" fill="url(#glow1)" filter="url(#softGlow)"/>
+  <circle cx="288" cy="510" r="260" fill="url(#glow2)" filter="url(#softGlow)"/>
+  <g opacity="0.08">
+    <circle cx="320" cy="180" r="4" fill="#1abc9c"><animate attributeName="r" values="4;8;4" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="520" cy="120" r="3" fill="#d97706"><animate attributeName="r" values="3;6;3" dur="3.5s" repeatCount="indefinite"/></circle>
+    <circle cx="700" cy="200" r="4" fill="#1abc9c"><animate attributeName="r" values="4;9;4" dur="5s" repeatCount="indefinite"/></circle>
+    <circle cx="1100" cy="150" r="3" fill="#d97706"><animate attributeName="r" values="3;7;3" dur="4.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1400" cy="220" r="4" fill="#1abc9c"><animate attributeName="r" values="4;8;4" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="1600" cy="300" r="3" fill="#d97706"><animate attributeName="r" values="3;6;3" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="400" cy="400" r="4" fill="#1abc9c"><animate attributeName="r" values="4;9;4" dur="5.5s" repeatCount="indefinite"/></circle>
+    <circle cx="800" cy="450" r="3" fill="#d97706"><animate attributeName="r" values="3;7;3" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="1200" cy="380" r="4" fill="#1abc9c"><animate attributeName="r" values="4;8;4" dur="4.2s" repeatCount="indefinite"/></circle>
+    <circle cx="1500" cy="420" r="3" fill="#d97706"><animate attributeName="r" values="3;6;3" dur="3.2s" repeatCount="indefinite"/></circle>
+    <line x1="320" y1="180" x2="520" y2="120" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+    <line x1="520" y1="120" x2="700" y2="200" stroke="#d97706" stroke-width="0.5" opacity="0.4"/>
+    <line x1="700" y1="200" x2="1100" y2="150" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+    <line x1="1100" y1="150" x2="1400" y2="220" stroke="#d97706" stroke-width="0.5" opacity="0.4"/>
+    <line x1="1400" y1="220" x2="1600" y2="300" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+    <line x1="400" y1="400" x2="800" y2="450" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+    <line x1="800" y1="450" x2="1200" y2="380" stroke="#d97706" stroke-width="0.5" opacity="0.4"/>
+    <line x1="1200" y1="380" x2="1500" y2="420" stroke="#1abc9c" stroke-width="0.5" opacity="0.4"/>
+    <line x1="320" y1="180" x2="400" y2="400" stroke="#d97706" stroke-width="0.5" opacity="0.3"/>
+    <line x1="700" y1="200" x2="800" y2="450" stroke="#1abc9c" stroke-width="0.5" opacity="0.3"/>
+    <line x1="1100" y1="150" x2="1200" y2="380" stroke="#d97706" stroke-width="0.5" opacity="0.3"/>
+    <line x1="1400" y1="220" x2="1500" y2="420" stroke="#1abc9c" stroke-width="0.5" opacity="0.3"/>
+  </g>
+  <g transform="translate(960,300)" opacity="0.12">
+    <polygon points="-24,-36 48,0 -24,36" fill="#1abc9c" filter="url(#softGlow)">
+      <animateTransform attributeName="transform" type="scale" values="1;1.05;1" dur="3s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+  <line x1="0" y1="580" x2="1920" y2="580" stroke="url(#glow1)" stroke-width="2" opacity="0.3"/>
+</svg>

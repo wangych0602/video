@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "HLS Playback URL"
+
+msgid "IP地址"
+msgstr "IP Address"
+
+msgid "MAC地址"
+msgstr "MAC Address"
+
+msgid "RTMP推流地址"
+msgstr "RTMP Push URL"
+
+msgid "一次性推流令牌"
+msgstr "Push Token"
+
+msgid "上传中"
+msgstr "Uploading"
+
+msgid "专辑名称"
+msgstr "Album Name"
+
+msgid "专辑封面"
+msgstr "Album Cover"
+
+msgid "专辑简介"
+msgstr "Album Description"
+
+msgid "令牌已使用"
+msgstr "Token Used"
+
+msgid "允许注册"
+msgstr "Allow Registration"
+
+msgid "全局默认视频封面"
+msgstr "Global Default Video Cover"
+
+msgid "分类"
+msgstr "Category"
+
+msgid "分类名称"
+msgstr "Category Name"
+
+msgid "分辨率"
+msgstr "Resolution"
+
+msgid "创建时间"
+msgstr "Created At"
+
+msgid "厂商"
+msgstr "Manufacturer"
+
+msgid "取消"
+msgstr "Cancel"
+
+msgid "后台批量审核通过"
+msgstr "Approved in bulk from admin"
+
+msgid "后台批量拒绝"
+msgstr "Rejected in bulk from admin"
+
+msgid "启动中"
+msgstr "Starting"
+
+msgid "固件版本"
+msgstr "Firmware Version"
+
+msgid "在线"
+msgstr "Online"
+
+msgid "型号"
+msgstr "Model"
+
+msgid "头像"
+msgstr "Avatar"
+
+msgid "学校"
+msgstr "School"
+
+msgid "学校管理员"
+msgstr "School Administrator"
+
+msgid "学生"
+msgstr "Student"
+
+msgid "安装位置"
+msgstr "Location"
+
+msgid "审核人"
+msgstr "Reviewer"
+
+msgid "审核意见"
+msgstr "Review Comment"
+
+msgid "审核记录"
+msgstr "Review Log"
+
+msgid "封面图"
+msgstr "Cover Image"
+
+msgid "已停止"
+msgstr "Stopped"
+
+msgid "已创建"
+msgstr "Created"
+
+msgid "已发布"
+msgstr "Published"
+
+msgid "已审核"
+msgstr "Approved"
+
+msgid "已拒绝"
+msgstr "Rejected"
+
+msgid "已结束"
+msgstr "Ended"
+
+msgid "开始时间"
+msgstr "Start Time"
+
+msgid "异常"
+msgstr "Error"
+
+msgid "录制中"
+msgstr "Recording"
+
+msgid "录播主机"
+msgstr "Recording Host"
+
+msgid "待审核"
+msgstr "Pending"
+
+msgid "待开播"
+msgstr "Scheduled"
+
+msgid "所属学校"
+msgstr "School"
+
+msgid "所属教学楼"
+msgstr "Building"
+
+msgid "批量发布"
+msgstr "Publish Selected"
+
+msgid "批量审核通过"
+msgstr "Approve Selected"
+
+msgid "批量拒绝"
+msgstr "Reject Selected"
+
+msgid "拒绝"
+msgstr "Rejected"
+
+msgid "推流密钥"
+msgstr "Stream Key"
+
+msgid "描述"
+msgstr "Description"
+
+msgid "提示"
+msgstr "Notice"
+
+msgid "摄像头"
+msgstr "Camera"
+
+msgid "操作"
+msgstr "Action"
+
+msgid "教学楼"
+msgstr "Building"
+
+msgid "教学楼名称"
+msgstr "Building Name"
+
+msgid "教室"
+msgstr "Room"
+
+msgid "教室名称"
+msgstr "Room Name"
+
+msgid "教师"
+msgstr "Teacher"
+
+msgid "教师资料"
+msgstr "Teacher Profile"
+
+msgid "文件大小"
+msgstr "File Size"
+
+msgid "无"
+msgstr "None"
+
+msgid "更新时间"
+msgstr "Updated At"
+
+msgid "最后在线时间"
+msgstr "Last Online Time"
+
+msgid "权限控制"
+msgstr "Permissions"
+
+msgid "标题"
+msgstr "Title"
+
+msgid "状态"
+msgstr "Status"
+
+msgid "用户"
+msgstr "User"
+
+msgid "直播"
+msgstr "Live"
+
+msgid "直播中"
+msgstr "Live"
+
+msgid "直播会话"
+msgstr "Live Session"
+
+msgid "直播标题"
+msgstr "Live Title"
+
+msgid "直播状态"
+msgstr "Live Status"
+
+msgid "直播间"
+msgstr "Live Room"
+
+msgid "直播间名称"
+msgstr "Live Room Name"
+
+msgid "确定"
+msgstr "Confirm"
+
+msgid "离线"
+msgstr "Offline"
+
+msgid "科目"
+msgstr "Subject"
+
+msgid "站点名称"
+msgstr "Site Name"
+
+msgid "站点描述"
+msgstr "Site Description"
+
+msgid "简介"
+msgstr "Bio"
+
+msgid "管理员"
+msgstr "Administrator"
+
+msgid "系统设置"
+msgstr "System Settings"
+
+msgid "终端"
+msgstr "Terminal"
+
+msgid "结束时间"
+msgstr "End Time"
+
+msgid "联系邮箱"
+msgstr "Contact Email"
+
+msgid "草稿"
+msgstr "Draft"
+
+msgid "视频"
+msgstr "Video"
+
+msgid "视频专辑"
+msgstr "Video Album"
+
+msgid "视频分类"
+msgstr "Video Category"
+
+msgid "视频文件"
+msgstr "Video File"
+
+msgid "视频时长"
+msgstr "Duration"
+
+msgid "视频设置"
+msgstr "Video Settings"
+
+msgid "角色"
+msgstr "Role"
+
+msgid "设备"
+msgstr "Device"
+
+msgid "设备SN"
+msgstr "Device SN"
+
+msgid "设备令牌"
+msgstr "Device Token"
+
+msgid "设备名称"
+msgstr "Device Name"
+
+msgid "设备类型"
+msgstr "Device Type"
+
+msgid "设置ID"
+msgstr "Setting ID"
+
+msgid "评价"
+msgstr "Review"
+
+msgid "评分"
+msgstr "Rating"
+
+msgid "评论"
+msgstr "Comment"
+
+msgid "通过"
+msgstr "Approved"
+
+msgid "音箱"
+msgstr "Speaker"
+
+msgid "预约时间"
+msgstr "Scheduled Time"
+
+msgid "麦克风"
+msgstr "Microphone"
+
+msgid "默认语言"
+msgstr "Default Language"
+
+
+msgid "推流直播"
+msgstr "Push Live"

@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "HLS-адрес просмотра"
+
+msgid "IP地址"
+msgstr "IP-адрес"
+
+msgid "MAC地址"
+msgstr "MAC-адрес"
+
+msgid "RTMP推流地址"
+msgstr "RTMP-адрес"
+
+msgid "一次性推流令牌"
+msgstr "Токен"
+
+msgid "上传中"
+msgstr "Загрузка"
+
+msgid "专辑名称"
+msgstr "Название альбома"
+
+msgid "专辑封面"
+msgstr "Обложка альбома"
+
+msgid "专辑简介"
+msgstr "Описание альбома"
+
+msgid "令牌已使用"
+msgstr "Использован"
+
+msgid "允许注册"
+msgstr "Разрешить регистрацию"
+
+msgid "全局默认视频封面"
+msgstr "Глобальная обложка видео"
+
+msgid "分类"
+msgstr "Категория"
+
+msgid "分类名称"
+msgstr "Название категории"
+
+msgid "分辨率"
+msgstr "Разрешение"
+
+msgid "创建时间"
+msgstr "Время создания"
+
+msgid "厂商"
+msgstr "Производитель"
+
+msgid "取消"
+msgstr "Отмена"
+
+msgid "后台批量审核通过"
+msgstr "Пакетное утверждение из панели"
+
+msgid "后台批量拒绝"
+msgstr "Пакетный отказ из панели"
+
+msgid "启动中"
+msgstr "Запуск"
+
+msgid "固件版本"
+msgstr "Версия прошивки"
+
+msgid "在线"
+msgstr "В сети"
+
+msgid "型号"
+msgstr "Модель"
+
+msgid "头像"
+msgstr "Аватар"
+
+msgid "学校"
+msgstr "Школа"
+
+msgid "学校管理员"
+msgstr "Администратор школы"
+
+msgid "学生"
+msgstr "Ученик"
+
+msgid "安装位置"
+msgstr "Место установки"
+
+msgid "审核人"
+msgstr "Проверяющий"
+
+msgid "审核意见"
+msgstr "Комментарий проверки"
+
+msgid "审核记录"
+msgstr "Журнал проверки"
+
+msgid "封面图"
+msgstr "Обложка"
+
+msgid "已停止"
+msgstr "Остановлено"
+
+msgid "已创建"
+msgstr "Создано"
+
+msgid "已发布"
+msgstr "Опубликовано"
+
+msgid "已审核"
+msgstr "Одобрено"
+
+msgid "已拒绝"
+msgstr "Отклонено"
+
+msgid "已结束"
+msgstr "Завершено"
+
+msgid "开始时间"
+msgstr "Время начала"
+
+msgid "异常"
+msgstr "Ошибка"
+
+msgid "录制中"
+msgstr "Идёт запись"
+
+msgid "录播主机"
+msgstr "Сервер записи"
+
+msgid "待审核"
+msgstr "На проверке"
+
+msgid "待开播"
+msgstr "Запланировано"
+
+msgid "所属学校"
+msgstr "Школа"
+
+msgid "所属教学楼"
+msgstr "Здание"
+
+msgid "批量发布"
+msgstr "Пакетная публикация"
+
+msgid "批量审核通过"
+msgstr "Пакетное утверждение"
+
+msgid "批量拒绝"
+msgstr "Пакетный отказ"
+
+msgid "拒绝"
+msgstr "Отклонить"
+
+msgid "推流密钥"
+msgstr "Ключ потока"
+
+msgid "描述"
+msgstr "Описание"
+
+msgid "提示"
+msgstr "Уведомление"
+
+msgid "摄像头"
+msgstr "Камера"
+
+msgid "操作"
+msgstr "Действие"
+
+msgid "教学楼"
+msgstr "Здание"
+
+msgid "教学楼名称"
+msgstr "Название здания"
+
+msgid "教室"
+msgstr "Аудитория"
+
+msgid "教室名称"
+msgstr "Название аудитории"
+
+msgid "教师"
+msgstr "Учитель"
+
+msgid "教师资料"
+msgstr "Профиль учителя"
+
+msgid "文件大小"
+msgstr "Размер файла"
+
+msgid "无"
+msgstr "Нет"
+
+msgid "更新时间"
+msgstr "Время обновления"
+
+msgid "最后在线时间"
+msgstr "Последний раз в сети"
+
+msgid "权限控制"
+msgstr "Права"
+
+msgid "标题"
+msgstr "Название"
+
+msgid "状态"
+msgstr "Статус"
+
+msgid "用户"
+msgstr "Пользователь"
+
+msgid "直播"
+msgstr "Прямой эфир"
+
+msgid "直播中"
+msgstr "В эфире"
+
+msgid "直播会话"
+msgstr "Сессия трансляции"
+
+msgid "直播标题"
+msgstr "Название трансляции"
+
+msgid "直播状态"
+msgstr "Статус трансляции"
+
+msgid "直播间"
+msgstr "Трансляция"
+
+msgid "直播间名称"
+msgstr "Название комнаты"
+
+msgid "确定"
+msgstr "Подтвердить"
+
+msgid "离线"
+msgstr "Не в сети"
+
+msgid "科目"
+msgstr "Предмет"
+
+msgid "站点名称"
+msgstr "Название сайта"
+
+msgid "站点描述"
+msgstr "Описание сайта"
+
+msgid "简介"
+msgstr "Описание"
+
+msgid "管理员"
+msgstr "Администратор"
+
+msgid "系统设置"
+msgstr "Системные настройки"
+
+msgid "终端"
+msgstr "Терминал"
+
+msgid "结束时间"
+msgstr "Время окончания"
+
+msgid "联系邮箱"
+msgstr "Контактная почта"
+
+msgid "草稿"
+msgstr "Черновик"
+
+msgid "视频"
+msgstr "Видео"
+
+msgid "视频专辑"
+msgstr "Видеоальбом"
+
+msgid "视频分类"
+msgstr "Категория видео"
+
+msgid "视频文件"
+msgstr "Видеофайл"
+
+msgid "视频时长"
+msgstr "Длительность"
+
+msgid "视频设置"
+msgstr "Настройки видео"
+
+msgid "角色"
+msgstr "Роль"
+
+msgid "设备"
+msgstr "Устройство"
+
+msgid "设备SN"
+msgstr "SN устройства"
+
+msgid "设备令牌"
+msgstr "Токен устройства"
+
+msgid "设备名称"
+msgstr "Название устройства"
+
+msgid "设备类型"
+msgstr "Тип устройства"
+
+msgid "设置ID"
+msgstr "ID настройки"
+
+msgid "评价"
+msgstr "Отзыв"
+
+msgid "评分"
+msgstr "Рейтинг"
+
+msgid "评论"
+msgstr "Комментарий"
+
+msgid "通过"
+msgstr "Одобрено"
+
+msgid "音箱"
+msgstr "Колонка"
+
+msgid "预约时间"
+msgstr "Время записи"
+
+msgid "麦克风"
+msgstr "Микрофон"
+
+msgid "默认语言"
+msgstr "Язык по умолчанию"
+
+
+msgid "推流直播"
+msgstr "Прямой эфир"

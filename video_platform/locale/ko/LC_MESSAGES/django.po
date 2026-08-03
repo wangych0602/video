@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "HLS 시청 URL"
+
+msgid "IP地址"
+msgstr "IP 주소"
+
+msgid "MAC地址"
+msgstr "MAC 주소"
+
+msgid "RTMP推流地址"
+msgstr "RTMP 푸시 URL"
+
+msgid "一次性推流令牌"
+msgstr "푸시 토큰"
+
+msgid "上传中"
+msgstr "업로드 중"
+
+msgid "专辑名称"
+msgstr "앨범 이름"
+
+msgid "专辑封面"
+msgstr "앨범 표지"
+
+msgid "专辑简介"
+msgstr "앨범 설명"
+
+msgid "令牌已使用"
+msgstr "토큰 사용됨"
+
+msgid "允许注册"
+msgstr "가입 허용"
+
+msgid "全局默认视频封面"
+msgstr "전역 기본 동영상 표지"
+
+msgid "分类"
+msgstr "분류"
+
+msgid "分类名称"
+msgstr "분류 이름"
+
+msgid "分辨率"
+msgstr "해상도"
+
+msgid "创建时间"
+msgstr "생성 시간"
+
+msgid "厂商"
+msgstr "제조사"
+
+msgid "取消"
+msgstr "취소"
+
+msgid "后台批量审核通过"
+msgstr "관리자 일괄 승인"
+
+msgid "后台批量拒绝"
+msgstr "관리자 일괄 거부"
+
+msgid "启动中"
+msgstr "시작 중"
+
+msgid "固件版本"
+msgstr "펌웨어 버전"
+
+msgid "在线"
+msgstr "온라인"
+
+msgid "型号"
+msgstr "모델"
+
+msgid "头像"
+msgstr "아바타"
+
+msgid "学校"
+msgstr "학교"
+
+msgid "学校管理员"
+msgstr "학교 관리자"
+
+msgid "学生"
+msgstr "학생"
+
+msgid "安装位置"
+msgstr "설치 위치"
+
+msgid "审核人"
+msgstr "검토자"
+
+msgid "审核意见"
+msgstr "검토 의견"
+
+msgid "审核记录"
+msgstr "검토 기록"
+
+msgid "封面图"
+msgstr "표지 이미지"
+
+msgid "已停止"
+msgstr "중지됨"
+
+msgid "已创建"
+msgstr "생성됨"
+
+msgid "已发布"
+msgstr "게시됨"
+
+msgid "已审核"
+msgstr "승인됨"
+
+msgid "已拒绝"
+msgstr "거부됨"
+
+msgid "已结束"
+msgstr "종료됨"
+
+msgid "开始时间"
+msgstr "시작 시간"
+
+msgid "异常"
+msgstr "오류"
+
+msgid "录制中"
+msgstr "녹화 중"
+
+msgid "录播主机"
+msgstr "녹화 호스트"
+
+msgid "待审核"
+msgstr "검토 대기"
+
+msgid "待开播"
+msgstr "방송 대기"
+
+msgid "所属学校"
+msgstr "소속 학교"
+
+msgid "所属教学楼"
+msgstr "소속 교사동"
+
+msgid "批量发布"
+msgstr "일괄 게시"
+
+msgid "批量审核通过"
+msgstr "일괄 승인"
+
+msgid "批量拒绝"
+msgstr "일괄 거부"
+
+msgid "拒绝"
+msgstr "거부"
+
+msgid "推流密钥"
+msgstr "스트림 키"
+
+msgid "描述"
+msgstr "설명"
+
+msgid "提示"
+msgstr "알림"
+
+msgid "摄像头"
+msgstr "카메라"
+
+msgid "操作"
+msgstr "작업"
+
+msgid "教学楼"
+msgstr "교사동"
+
+msgid "教学楼名称"
+msgstr "교사동 이름"
+
+msgid "教室"
+msgstr "교실"
+
+msgid "教室名称"
+msgstr "교실 이름"
+
+msgid "教师"
+msgstr "교사"
+
+msgid "教师资料"
+msgstr "교사 프로필"
+
+msgid "文件大小"
+msgstr "파일 크기"
+
+msgid "无"
+msgstr "없음"
+
+msgid "更新时间"
+msgstr "업데이트 시간"
+
+msgid "最后在线时间"
+msgstr "마지막 온라인 시간"
+
+msgid "权限控制"
+msgstr "권한"
+
+msgid "标题"
+msgstr "제목"
+
+msgid "状态"
+msgstr "상태"
+
+msgid "用户"
+msgstr "사용자"
+
+msgid "直播"
+msgstr "라이브"
+
+msgid "直播中"
+msgstr "라이브 중"
+
+msgid "直播会话"
+msgstr "라이브 세션"
+
+msgid "直播标题"
+msgstr "라이브 제목"
+
+msgid "直播状态"
+msgstr "라이브 상태"
+
+msgid "直播间"
+msgstr "라이브방"
+
+msgid "直播间名称"
+msgstr "라이브방 이름"
+
+msgid "确定"
+msgstr "확인"
+
+msgid "离线"
+msgstr "오프라인"
+
+msgid "科目"
+msgstr "과목"
+
+msgid "站点名称"
+msgstr "사이트 이름"
+
+msgid "站点描述"
+msgstr "사이트 설명"
+
+msgid "简介"
+msgstr "소개"
+
+msgid "管理员"
+msgstr "관리자"
+
+msgid "系统设置"
+msgstr "시스템 설정"
+
+msgid "终端"
+msgstr "단말기"
+
+msgid "结束时间"
+msgstr "종료 시간"
+
+msgid "联系邮箱"
+msgstr "연락 이메일"
+
+msgid "草稿"
+msgstr "초안"
+
+msgid "视频"
+msgstr "동영상"
+
+msgid "视频专辑"
+msgstr "동영상 앨범"
+
+msgid "视频分类"
+msgstr "동영상 분류"
+
+msgid "视频文件"
+msgstr "동영상 파일"
+
+msgid "视频时长"
+msgstr "동영상 길이"
+
+msgid "视频设置"
+msgstr "동영상 설정"
+
+msgid "角色"
+msgstr "역할"
+
+msgid "设备"
+msgstr "기기"
+
+msgid "设备SN"
+msgstr "기기 SN"
+
+msgid "设备令牌"
+msgstr "기기 토큰"
+
+msgid "设备名称"
+msgstr "기기 이름"
+
+msgid "设备类型"
+msgstr "기기 유형"
+
+msgid "设置ID"
+msgstr "설정 ID"
+
+msgid "评价"
+msgstr "리뷰"
+
+msgid "评分"
+msgstr "평점"
+
+msgid "评论"
+msgstr "댓글"
+
+msgid "通过"
+msgstr "승인"
+
+msgid "音箱"
+msgstr "스피커"
+
+msgid "预约时间"
+msgstr "예약 시간"
+
+msgid "麦克风"
+msgstr "마이크"
+
+msgid "默认语言"
+msgstr "기본 언어"
+
+
+msgid "推流直播"
+msgstr "라이브 방송"

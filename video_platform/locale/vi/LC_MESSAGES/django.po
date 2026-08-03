@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "Địa chỉ xem HLS"
+
+msgid "IP地址"
+msgstr "Địa chỉ IP"
+
+msgid "MAC地址"
+msgstr "Địa chỉ MAC"
+
+msgid "RTMP推流地址"
+msgstr "Địa chỉ đẩy RTMP"
+
+msgid "一次性推流令牌"
+msgstr "Token"
+
+msgid "上传中"
+msgstr "Đang tải lên"
+
+msgid "专辑名称"
+msgstr "Tên album"
+
+msgid "专辑封面"
+msgstr "Ảnh bìa album"
+
+msgid "专辑简介"
+msgstr "Mô tả album"
+
+msgid "令牌已使用"
+msgstr "Đã dùng"
+
+msgid "允许注册"
+msgstr "Cho phép đăng ký"
+
+msgid "全局默认视频封面"
+msgstr "Ảnh bìa video mặc định toàn cục"
+
+msgid "分类"
+msgstr "Phân loại"
+
+msgid "分类名称"
+msgstr "Tên phân loại"
+
+msgid "分辨率"
+msgstr "Độ phân giải"
+
+msgid "创建时间"
+msgstr "Thời gian tạo"
+
+msgid "厂商"
+msgstr "Nhà sản xuất"
+
+msgid "取消"
+msgstr "Hủy"
+
+msgid "后台批量审核通过"
+msgstr "Được duyệt hàng loạt từ quản trị viên"
+
+msgid "后台批量拒绝"
+msgstr "Bị từ chối hàng loạt từ quản trị viên"
+
+msgid "启动中"
+msgstr "Đang khởi động"
+
+msgid "固件版本"
+msgstr "Phiên bản firmware"
+
+msgid "在线"
+msgstr "Trực tuyến"
+
+msgid "型号"
+msgstr "Model"
+
+msgid "头像"
+msgstr "Ảnh đại diện"
+
+msgid "学校"
+msgstr "Trường học"
+
+msgid "学校管理员"
+msgstr "Quản trị trường"
+
+msgid "学生"
+msgstr "Học sinh"
+
+msgid "安装位置"
+msgstr "Vị trí lắp đặt"
+
+msgid "审核人"
+msgstr "Người duyệt"
+
+msgid "审核意见"
+msgstr "Ý kiến duyệt"
+
+msgid "审核记录"
+msgstr "Nhật ký duyệt"
+
+msgid "封面图"
+msgstr "Ảnh bìa"
+
+msgid "已停止"
+msgstr "Đã dừng"
+
+msgid "已创建"
+msgstr "Đã tạo"
+
+msgid "已发布"
+msgstr "Đã xuất bản"
+
+msgid "已审核"
+msgstr "Đã duyệt"
+
+msgid "已拒绝"
+msgstr "Đã từ chối"
+
+msgid "已结束"
+msgstr "Đã kết thúc"
+
+msgid "开始时间"
+msgstr "Thời gian bắt đầu"
+
+msgid "异常"
+msgstr "Lỗi"
+
+msgid "录制中"
+msgstr "Đang ghi hình"
+
+msgid "录播主机"
+msgstr "Máy chủ ghi hình"
+
+msgid "待审核"
+msgstr "Chờ duyệt"
+
+msgid "待开播"
+msgstr "Chờ phát sóng"
+
+msgid "所属学校"
+msgstr "Trường trực thuộc"
+
+msgid "所属教学楼"
+msgstr "Tòa nhà trực thuộc"
+
+msgid "批量发布"
+msgstr "Đăng hàng loạt"
+
+msgid "批量审核通过"
+msgstr "Duyệt hàng loạt"
+
+msgid "批量拒绝"
+msgstr "Từ chối hàng loạt"
+
+msgid "拒绝"
+msgstr "Từ chối"
+
+msgid "推流密钥"
+msgstr "Khóa phát trực tiếp"
+
+msgid "描述"
+msgstr "Mô tả"
+
+msgid "提示"
+msgstr "Thông báo"
+
+msgid "摄像头"
+msgstr "Camera"
+
+msgid "操作"
+msgstr "Thao tác"
+
+msgid "教学楼"
+msgstr "Tòa nhà"
+
+msgid "教学楼名称"
+msgstr "Tên tòa nhà"
+
+msgid "教室"
+msgstr "Phòng học"
+
+msgid "教室名称"
+msgstr "Tên phòng học"
+
+msgid "教师"
+msgstr "Giáo viên"
+
+msgid "教师资料"
+msgstr "Hồ sơ giáo viên"
+
+msgid "文件大小"
+msgstr "Kích thước tệp"
+
+msgid "无"
+msgstr "Không có"
+
+msgid "更新时间"
+msgstr "Thời gian cập nhật"
+
+msgid "最后在线时间"
+msgstr "Lần trực tuyến cuối"
+
+msgid "权限控制"
+msgstr "Quyền"
+
+msgid "标题"
+msgstr "Tiêu đề"
+
+msgid "状态"
+msgstr "Trạng thái"
+
+msgid "用户"
+msgstr "Người dùng"
+
+msgid "直播"
+msgstr "Phát trực tiếp"
+
+msgid "直播中"
+msgstr "Đang phát trực tiếp"
+
+msgid "直播会话"
+msgstr "Phiên livestream"
+
+msgid "直播标题"
+msgstr "Tiêu đề livestream"
+
+msgid "直播状态"
+msgstr "Trạng thái livestream"
+
+msgid "直播间"
+msgstr "Phòng phát trực tiếp"
+
+msgid "直播间名称"
+msgstr "Tên phòng phát trực tiếp"
+
+msgid "确定"
+msgstr "Xác nhận"
+
+msgid "离线"
+msgstr "Ngoại tuyến"
+
+msgid "科目"
+msgstr "Môn học"
+
+msgid "站点名称"
+msgstr "Tên trang web"
+
+msgid "站点描述"
+msgstr "Mô tả trang web"
+
+msgid "简介"
+msgstr "Giới thiệu"
+
+msgid "管理员"
+msgstr "Quản trị viên"
+
+msgid "系统设置"
+msgstr "Cài đặt hệ thống"
+
+msgid "终端"
+msgstr "Thiết bị đầu cuối"
+
+msgid "结束时间"
+msgstr "Thời gian kết thúc"
+
+msgid "联系邮箱"
+msgstr "Email liên hệ"
+
+msgid "草稿"
+msgstr "Bản nháp"
+
+msgid "视频"
+msgstr "Video"
+
+msgid "视频专辑"
+msgstr "Album video"
+
+msgid "视频分类"
+msgstr "Phân loại video"
+
+msgid "视频文件"
+msgstr "Tệp video"
+
+msgid "视频时长"
+msgstr "Thời lượng video"
+
+msgid "视频设置"
+msgstr "Cài đặt video"
+
+msgid "角色"
+msgstr "Vai trò"
+
+msgid "设备"
+msgstr "Thiết bị"
+
+msgid "设备SN"
+msgstr "SN thiết bị"
+
+msgid "设备令牌"
+msgstr "Mã thông báo thiết bị"
+
+msgid "设备名称"
+msgstr "Tên thiết bị"
+
+msgid "设备类型"
+msgstr "Loại thiết bị"
+
+msgid "设置ID"
+msgstr "ID cài đặt"
+
+msgid "评价"
+msgstr "Nhận xét"
+
+msgid "评分"
+msgstr "Đánh giá"
+
+msgid "评论"
+msgstr "Bình luận"
+
+msgid "通过"
+msgstr "Đã duyệt"
+
+msgid "音箱"
+msgstr "Loa"
+
+msgid "预约时间"
+msgstr "Thời gian hẹn"
+
+msgid "麦克风"
+msgstr "Micro"
+
+msgid "默认语言"
+msgstr "Ngôn ngữ mặc định"
+
+
+msgid "推流直播"
+msgstr "Phát trực tiếp"

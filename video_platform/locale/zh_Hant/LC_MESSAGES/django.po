@@ -1,0 +1,345 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: video-platform\n"
+"PO-Revision-Date: 2026-08-02 00:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_Hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "HLS观看地址"
+msgstr "HLS觀看位址"
+
+msgid "IP地址"
+msgstr "IP位址"
+
+msgid "MAC地址"
+msgstr "MAC位址"
+
+msgid "RTMP推流地址"
+msgstr "RTMP推流位址"
+
+msgid "一次性推流令牌"
+msgstr "推流令牌"
+
+msgid "上传中"
+msgstr "上傳中"
+
+msgid "专辑名称"
+msgstr "專輯名稱"
+
+msgid "专辑封面"
+msgstr "專輯封面"
+
+msgid "专辑简介"
+msgstr "專輯簡介"
+
+msgid "令牌已使用"
+msgstr "令牌已使用"
+
+msgid "允许注册"
+msgstr "允許註冊"
+
+msgid "全局默认视频封面"
+msgstr "全域預設影片封面"
+
+msgid "分类"
+msgstr "分類"
+
+msgid "分类名称"
+msgstr "分類名稱"
+
+msgid "分辨率"
+msgstr "解析度"
+
+msgid "创建时间"
+msgstr "建立時間"
+
+msgid "厂商"
+msgstr "廠商"
+
+msgid "取消"
+msgstr "取消"
+
+msgid "后台批量审核通过"
+msgstr "後台批量審核通過"
+
+msgid "后台批量拒绝"
+msgstr "後台批量拒絕"
+
+msgid "启动中"
+msgstr "啟動中"
+
+msgid "固件版本"
+msgstr "韌體版本"
+
+msgid "在线"
+msgstr "在線"
+
+msgid "型号"
+msgstr "型號"
+
+msgid "头像"
+msgstr "頭像"
+
+msgid "学校"
+msgstr "學校"
+
+msgid "学校管理员"
+msgstr "學校管理員"
+
+msgid "学生"
+msgstr "學生"
+
+msgid "安装位置"
+msgstr "安裝位置"
+
+msgid "审核人"
+msgstr "審核人"
+
+msgid "审核意见"
+msgstr "審核意見"
+
+msgid "审核记录"
+msgstr "審核紀錄"
+
+msgid "封面图"
+msgstr "封面圖"
+
+msgid "已停止"
+msgstr "已停止"
+
+msgid "已创建"
+msgstr "已建立"
+
+msgid "已发布"
+msgstr "已發布"
+
+msgid "已审核"
+msgstr "已審核"
+
+msgid "已拒绝"
+msgstr "已拒絕"
+
+msgid "已结束"
+msgstr "已結束"
+
+msgid "开始时间"
+msgstr "開始時間"
+
+msgid "异常"
+msgstr "異常"
+
+msgid "录制中"
+msgstr "錄製中"
+
+msgid "录播主机"
+msgstr "錄播主機"
+
+msgid "待审核"
+msgstr "待審核"
+
+msgid "待开播"
+msgstr "待開播"
+
+msgid "所属学校"
+msgstr "所屬學校"
+
+msgid "所属教学楼"
+msgstr "所屬教學樓"
+
+msgid "批量发布"
+msgstr "批量發布"
+
+msgid "批量审核通过"
+msgstr "批量審核通過"
+
+msgid "批量拒绝"
+msgstr "批量拒絕"
+
+msgid "拒绝"
+msgstr "拒絕"
+
+msgid "推流密钥"
+msgstr "推流金鑰"
+
+msgid "描述"
+msgstr "描述"
+
+msgid "提示"
+msgstr "提示"
+
+msgid "摄像头"
+msgstr "攝像頭"
+
+msgid "操作"
+msgstr "操作"
+
+msgid "教学楼"
+msgstr "教學樓"
+
+msgid "教学楼名称"
+msgstr "教學樓名稱"
+
+msgid "教室"
+msgstr "教室"
+
+msgid "教室名称"
+msgstr "教室名稱"
+
+msgid "教师"
+msgstr "教師"
+
+msgid "教师资料"
+msgstr "教師資料"
+
+msgid "文件大小"
+msgstr "檔案大小"
+
+msgid "无"
+msgstr "無"
+
+msgid "更新时间"
+msgstr "更新時間"
+
+msgid "最后在线时间"
+msgstr "最後在線時間"
+
+msgid "权限控制"
+msgstr "權限控制"
+
+msgid "标题"
+msgstr "標題"
+
+msgid "状态"
+msgstr "狀態"
+
+msgid "用户"
+msgstr "使用者"
+
+msgid "直播"
+msgstr "直播"
+
+msgid "直播中"
+msgstr "直播中"
+
+msgid "直播会话"
+msgstr "直播會話"
+
+msgid "直播标题"
+msgstr "直播標題"
+
+msgid "直播状态"
+msgstr "直播狀態"
+
+msgid "直播间"
+msgstr "直播間"
+
+msgid "直播间名称"
+msgstr "直播間名稱"
+
+msgid "确定"
+msgstr "確定"
+
+msgid "离线"
+msgstr "離線"
+
+msgid "科目"
+msgstr "科目"
+
+msgid "站点名称"
+msgstr "站點名稱"
+
+msgid "站点描述"
+msgstr "站點描述"
+
+msgid "简介"
+msgstr "簡介"
+
+msgid "管理员"
+msgstr "管理員"
+
+msgid "系统设置"
+msgstr "系統設定"
+
+msgid "终端"
+msgstr "終端"
+
+msgid "结束时间"
+msgstr "結束時間"
+
+msgid "联系邮箱"
+msgstr "聯絡信箱"
+
+msgid "草稿"
+msgstr "草稿"
+
+msgid "视频"
+msgstr "影片"
+
+msgid "视频专辑"
+msgstr "影片專輯"
+
+msgid "视频分类"
+msgstr "影片分類"
+
+msgid "视频文件"
+msgstr "影片檔案"
+
+msgid "视频时长"
+msgstr "影片時長"
+
+msgid "视频设置"
+msgstr "影片設定"
+
+msgid "角色"
+msgstr "角色"
+
+msgid "设备"
+msgstr "設備"
+
+msgid "设备SN"
+msgstr "設備SN"
+
+msgid "设备令牌"
+msgstr "設備令牌"
+
+msgid "设备名称"
+msgstr "設備名稱"
+
+msgid "设备类型"
+msgstr "設備類型"
+
+msgid "设置ID"
+msgstr "設定ID"
+
+msgid "评价"
+msgstr "評價"
+
+msgid "评分"
+msgstr "評分"
+
+msgid "评论"
+msgstr "留言"
+
+msgid "通过"
+msgstr "通過"
+
+msgid "音箱"
+msgstr "音箱"
+
+msgid "预约时间"
+msgstr "預約時間"
+
+msgid "麦克风"
+msgstr "麥克風"
+
+msgid "默认语言"
+msgstr "預設語言"
+
+
+msgid "推流直播"
+msgstr "推流直播"
