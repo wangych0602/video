@@ -315,3 +315,33 @@ def start_analysis_task(task_id: int):
         thread = threading.Thread(target=run_analysis_task_sync, args=(task_id,))
         thread.daemon = True
         thread.start()
+
+@shared_task(name='ai_analysis.tasks.provider_health_check_task', bind=True, max_retries=3)
+def provider_health_check_task(self):
+    """Provider 健康检查定时任务
+    
+    每10分钟执行一次，检测所有AI Provider的健康状态
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    logger.info("Starting provider health check task...")
+    
+    try:
+        from ai_analysis.services.provider_health import check_all_providers_health
+        
+        results = check_all_providers_health()
+        
+        logger.info(
+            f"Health check completed: "
+            f"total={results['total']}, "
+            f"active={results['active']}, "
+            f"degraded={results['degraded']}, "
+            f"offline={results['offline']}"
+        )
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Health check task failed: {e}")
+        self.retry(exc=e, countdown=60)  # 1分钟后重试

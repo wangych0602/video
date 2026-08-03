@@ -35,6 +35,11 @@ const router = createRouter({
           meta: { public: true },
         },
         {
+          path: 'teacher/ai',
+          name: 'teacher-ai',
+          component: () => import('@/views/TeacherAI.vue'),
+        },
+        {
           path: 'teacher/:id',
           name: 'teacher-profile',
           component: () => import('@/views/TeacherProfile.vue'),
@@ -70,6 +75,12 @@ const router = createRouter({
           component: () => import('@/views/AlbumDetail.vue'),
           props: true,
           meta: { public: true },
+        },
+        
+        {
+          path: 'ai-analytics',
+          name: 'ai-analytics',
+          component: () => import('@/views/AIAnalytics.vue'),
         },
         {
           path: 'admin',

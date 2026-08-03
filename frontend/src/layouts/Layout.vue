@@ -1,8 +1,8 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { BookOpen, ChevronDown, GraduationCap, Home, LayoutDashboard, MonitorPlay, Play, Radio, Search, Settings, Video } from 'lucide-vue-next'
+import { BarChart3, BookOpen, ChevronDown, Cpu, GraduationCap, Home, LayoutDashboard, MonitorPlay, Play, Radio, Search, Settings, Video } from 'lucide-vue-next'
 import LanguageSwitch from '@/components/LanguageSwitch.vue'
 import { searchStudio } from '@/api/studio'
 import type { SearchResult } from '@/api/types'
@@ -26,6 +26,12 @@ const menus = computed(() => {
   if (role === 'admin' || role === 'school_admin' || role === 'teacher') {
     items.push({ path: '/teacher', label: t('nav.teacher'), icon: LayoutDashboard })
   }
+  if (role === 'teacher') {
+      items.push({ path: '/teacher/ai', label: t('nav.aiAnalysis'), icon: Cpu })
+  }
+  if (role === 'admin' || role === 'school_admin') {
+      items.push({ path: '/ai-analytics', label: t('nav.aiAnalytics'), icon: BarChart3 })
+  }
   return items
 })
 
@@ -44,6 +50,7 @@ const activeMenu = computed(() => {
   const p = route.path
   if (p.startsWith('/video/')) return '/videos'
   if (p.startsWith('/album')) return '/albums'
+  if (p.startsWith('/teacher/ai')) return '/teacher/ai'
   if (p.startsWith('/teacher/')) return '/studio'
   if (p.startsWith('/teacher')) return '/teacher'
   return p

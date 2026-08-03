@@ -1,7 +1,8 @@
-﻿Django==6.0.7
+Django==5.2
 djangorestframework==3.15.2
 django-cors-headers==4.6.0
 django-filter==24.3
+django-simpleui
 Pillow==12.3.0
 psycopg[binary]==3.2.9
 gunicorn==23.0.0
@@ -10,6 +11,9 @@ redis==5.2.1
 mutagen==1.48.1
 reportlab==4.2.5
 
-# Celery (optional, for async tasks)
+# Celery for async tasks
 celery==5.4.0
-redis==5.0.0
+
+# AI SDKs
+openai==1.54.0
+google-generativeai==0.8.3

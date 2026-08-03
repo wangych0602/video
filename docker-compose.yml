@@ -67,6 +67,27 @@ services:
       - redis
       - nginx-rtmp
 
+  celery_worker:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    container_name: video-celery-worker
+    restart: unless-stopped
+    command: celery -A video_platform worker -l info
+    environment:
+      DB_ENGINE: postgres
+      DB_NAME: video_platform
+      DB_USER: video
+      DB_PASSWORD: video123456
+      DB_HOST: postgres
+      DB_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+
   frontend:
     image: node:20-alpine
     container_name: video-frontend

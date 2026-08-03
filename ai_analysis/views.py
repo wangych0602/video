@@ -1,13 +1,14 @@
 ﻿from rest_framework import viewsets, status
+from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, FileResponse
 from django.conf import settings
 import os
 
-from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport
+from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport, AIUsageLog
 from .serializers import (
     ClassAnalysisTaskSerializer,
     CreateAnalysisTaskSerializer,
@@ -338,3 +339,146 @@ class AIModelConfigViewSet(viewsets.ModelViewSet):
     queryset = AIModelConfig.objects.all()
     serializer_class = AIModelConfigSerializer
     permission_classes = [IsAdminUser]
+
+
+class ProviderStatusView(APIView):
+    """Provider 状态列表"""
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        from ai_analysis.services.provider_health import get_provider_status_summary
+        
+        summary = get_provider_status_summary()
+        
+        # 获取详细列表
+        from ai_analysis.models import AIModelConfig
+        configs = AIModelConfig.objects.filter(is_active=True).order_by('priority')
+        
+        details = []
+        for config in configs:
+            details.append({
+                'id': config.id,
+                'provider': config.provider,
+                'deployment_type': config.deployment_type,
+                'model_name': config.model_name,
+                'model_type': config.model_type,
+                'health_status': config.health_status,
+                'is_active': config.is_active,
+                'priority': config.priority,
+                'last_health_check_time': config.last_health_check_time.isoformat() if config.last_health_check_time else None,
+                'last_error_message': config.last_error_message,
+                'capabilities': config.get_capabilities(),
+            })
+        
+        return Response({
+            'summary': summary,
+            'details': details,
+        })
+
+
+class UsageStatisticsView(APIView):
+    """AI 使用统计"""
+    permission_classes = [IsAdminUser]
+    
+    def get(self, request):
+        from django.db.models import Sum, Count
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        # 时间范围参数
+        days = request.query_params.get('days', 30)
+        try:
+            days = int(days)
+        except (ValueError, TypeError):
+            days = 30
+        
+        end_date = timezone.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # 总体统计
+        total_stats = AIUsageLog.objects.filter(
+            request_time__gte=start_date,
+            request_time__lte=end_date
+        ).aggregate(
+            total_requests=Count('id'),
+            total_tokens=Sum('total_tokens'),
+            total_input_tokens=Sum('input_tokens'),
+            total_output_tokens=Sum('output_tokens'),
+            total_cost=Sum('estimated_cost'),
+            success_count=Count('id', filter=models.Q(status='success')),
+            failed_count=Count('id', filter=models.Q(status='failed')),
+        )
+        
+        # 按 Provider 统计
+        by_provider = AIUsageLog.objects.filter(
+            request_time__gte=start_date,
+            request_time__lte=end_date
+        ).values('provider', 'model_name').annotate(
+            requests=Count('id'),
+            tokens=Sum('total_tokens'),
+            cost=Sum('estimated_cost'),
+        ).order_by('-tokens')
+        
+        # 按任务类型统计
+        by_task_type = AIUsageLog.objects.filter(
+            request_time__gte=start_date,
+            request_time__lte=end_date
+        ).values('task_type').annotate(
+            requests=Count('id'),
+            tokens=Sum('total_tokens'),
+            cost=Sum('estimated_cost'),
+        ).order_by('-tokens')
+        
+        return Response({
+            'period': {
+                'start_date': start_date.isoformat(),
+                'end_date': end_date.isoformat(),
+                'days': days,
+            },
+            'total': {
+                'total_requests': total_stats['total_requests'] or 0,
+                'total_tokens': total_stats['total_tokens'] or 0,
+                'total_input_tokens': total_stats['total_input_tokens'] or 0,
+                'total_output_tokens': total_stats['total_output_tokens'] or 0,
+                'total_cost': float(total_stats['total_cost'] or 0),
+                'success_count': total_stats['success_count'] or 0,
+                'failed_count': total_stats['failed_count'] or 0,
+                'success_rate': round(
+                    (total_stats['success_count'] or 0) / (total_stats['total_requests'] or 1) * 100, 2
+                ),
+            },
+            'by_provider': list(by_provider),
+            'by_task_type': list(by_task_type),
+        })
+
+
+class AvailableModelsView(APIView):
+    """可用模型列表"""
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        from ai_analysis.services.provider_health import get_available_providers
+        
+        # 能力参数
+        capability = request.query_params.get('capability', 'chat')
+        
+        configs = get_available_providers(capability)
+        
+        models = []
+        for config in configs:
+            models.append({
+                'id': config.id,
+                'provider': config.provider,
+                'deployment_type': config.deployment_type,
+                'model_name': config.model_name,
+                'model_type': config.model_type,
+                'priority': config.priority,
+                'capabilities': config.get_capabilities(),
+                'health_status': config.health_status,
+            })
+        
+        return Response({
+            'capability': capability,
+            'count': len(models),
+            'models': models,
+        })

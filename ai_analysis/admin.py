@@ -1,7 +1,7 @@
 ﻿from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
-from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport
+from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport, AIUsageLog, OrganizationAIConfig
 
 
 @admin.register(ClassAnalysisTask)
@@ -141,3 +141,23 @@ class AIModelConfigAdmin(admin.ModelAdmin):
             'fields': ('created_time', 'updated_time')
         }),
     )
+
+
+@admin.register(AIUsageLog)
+class AIUsageLogAdmin(admin.ModelAdmin):
+    list_display = ['id', 'provider', 'model_name', 'task_type', 'total_tokens', 
+                    'estimated_cost', 'status', 'response_time', 'request_time']
+    list_filter = ['provider', 'task_type', 'status', 'request_time']
+    search_fields = ['provider', 'model_name', 'task_id', 'error_message']
+    readonly_fields = ['request_time']
+    date_hierarchy = 'request_time'
+
+
+@admin.register(OrganizationAIConfig)
+class OrganizationAIConfigAdmin(admin.ModelAdmin):
+    list_display = ['id', 'organization', 'default_model', 'monthly_token_limit', 
+                    'monthly_cost_limit', 'is_enabled', 'updated_time']
+    list_filter = ['is_enabled']
+    search_fields = ['organization__name']
+    filter_horizontal = ['allowed_models']
+    readonly_fields = ['created_time', 'updated_time']

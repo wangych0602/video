@@ -4,6 +4,9 @@ from .views import (
     ClassAnalysisTaskViewSet,
     AIAnalysisResultViewSet,
     AIModelConfigViewSet,
+    ProviderStatusView,
+    UsageStatisticsView,
+    AvailableModelsView,
 )
 
 router = DefaultRouter()
@@ -13,4 +16,14 @@ router.register(r'config', AIModelConfigViewSet, basename='ai-model-config')
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    # Provider 状态
+    path('providers/status/', ProviderStatusView.as_view(), name='provider-status'),
+    
+    # 使用统计
+    path('usage/statistics/', UsageStatisticsView.as_view(), name='usage-statistics'),
+    
+    # 可用模型
+    path('models/available/', AvailableModelsView.as_view(), name='available-models'),
+
 ]
