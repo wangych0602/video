@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -7,6 +7,7 @@ import LanguageSwitch from '@/components/LanguageSwitch.vue'
 import { searchStudio } from '@/api/studio'
 import type { SearchResult } from '@/api/types'
 import { useUserStore } from '@/stores/user'
+import Footer from '@/components/Footer.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -214,7 +215,9 @@ const showMobileMenu = ref(false)
     <main class="top-main">
       <router-view />
     </main>
-  </div>
+  
+    <Footer />
+</div>
 </template>
 
 <style scoped>

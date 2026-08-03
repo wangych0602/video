@@ -1,12 +1,13 @@
-from django.contrib import admin
-
+﻿from django.contrib import admin
 from .models import SiteConfig
+
 
 @admin.register(SiteConfig)
 class SiteConfigAdmin(admin.ModelAdmin):
     list_display = ['site_name', 'default_language', 'contact_email', 'registration_enabled', 'updated_at']
     fieldsets = (
         (None, {'fields': ('site_name', 'site_description', 'default_language', 'contact_email', 'registration_enabled')}),
+        ('Footer 设置', {'fields': ('footer_text', 'footer_copyright', 'footer_icp')}),
     )
 
     def has_add_permission(self, request):

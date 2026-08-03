@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getTeachers, getAlbums } from '@/api/studio'
@@ -370,4 +370,46 @@ onMounted(async () => {
     font-size: 24px;
   }
 }
-</style>
+
+/* ===== Page Enhancement Styles ===== */
+
+/* Teacher Card Enhancement */
+.teacher-card {
+  background: var(--platform-panel) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--platform-line) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.teacher-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-color: transparent !important;
+}
+
+/* Album Card Enhancement - remove dark overlay for studio page */
+.album-card::before {
+  display: none !important;
+}
+
+.album-card {
+  background: var(--platform-panel) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--platform-line) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden !important;
+}
+
+.album-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-color: transparent !important;
+}
+
+/* Section spacing enhancement */
+.studio-section {
+  margin-bottom: 48px !important;
+  position: relative !important;
+}</style>
