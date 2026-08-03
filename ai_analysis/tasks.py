@@ -1,26 +1,31 @@
+﻿import os
 import logging
-from django.utils import timezone
+from datetime import datetime
 
-from .models import ClassAnalysisTask, AIAnalysisResult
-from .agents.VideoAnalysisAgent import VideoAnalysisAgent
-from .agents.SpeechAgent import SpeechAgent
-from .agents.TeachingEvaluationAgent import TeachingEvaluationAgent
-from .agents.ReportAgent import ReportAgent
+from django.conf import settings
 
 logger = logging.getLogger('ai_analysis.tasks')
 
-# 可选导入 Celery
+# 检测 Celery 是否可用
+HAS_CELERY = False
 try:
     from celery import shared_task
     HAS_CELERY = True
 except ImportError:
-    HAS_CELERY = False
     logger.warning('Celery not available, tasks will run synchronously')
+    
+    # 定义一个假的 shared_task 装饰器，让代码能正常运行
+    def shared_task(func):
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        wrapper.delay = lambda *a, **kw: func(*a, **kw)
+        return wrapper
 
 
 def update_task_progress(task_id: int, progress: int, step: str = '', status: str = None):
     # 更新任务进度
     try:
+        from .models import ClassAnalysisTask
         task = ClassAnalysisTask.objects.get(id=task_id)
         task.progress = progress
         if step:
@@ -33,269 +38,207 @@ def update_task_progress(task_id: int, progress: int, step: str = '', status: st
 
 
 def run_analysis_task_sync(task_id: int):
-    # 同步运行分析任务
+    # 同步执行分析任务
     try:
+        from .models import ClassAnalysisTask, AIAnalysisResult
+        from .agents.VideoAnalysisAgent import VideoAnalysisAgent
+        from .agents.SpeechAnalysisAgent import SpeechAnalysisAgent
+        from .agents.TeachingEvaluationAgent import TeachingEvaluationAgent
+        from .agents.ReportAgent import ReportAgent
+        
         task = ClassAnalysisTask.objects.get(id=task_id)
-    except ClassAnalysisTask.DoesNotExist:
-        logger.error(f'Task {task_id} not found')
-        return None
-    
-    # 更新任务状态为处理中
-    task.status = ClassAnalysisTask.STATUS_PROCESSING
-    task.progress = 0
-    task.current_step = '任务开始'
-    task.save()
-    
-    try:
-        logger.info(f'Starting analysis task {task_id}')
         
-        # 准备输入数据
-        video_path = ''
-        if hasattr(task.video, 'file') and task.video.file:
-            video_path = task.video.file.path
-        
-        input_data = {
-            'video_id': task.video.id,
-            'video_path': video_path,
-            'task_id': task.id,
-            'task_type': task.task_type,
-        }
-        
-        # 1. 视频分析 (0% - 30%)
-        update_task_progress(task_id, 5, '开始视频分析')
-        
-        video_agent = VideoAnalysisAgent()
-        video_result = video_agent.run(input_data)
-        
-        update_task_progress(task_id, 30, '视频分析完成')
-        logger.info(f'Video analysis completed for task {task_id}')
-        
-        # 2. 语音分析 (30% - 50%)
-        update_task_progress(task_id, 35, '开始语音分析')
-        
-        speech_agent = SpeechAgent()
-        speech_result = speech_agent.run(input_data)
-        
-        update_task_progress(task_id, 50, '语音分析完成')
-        logger.info(f'Speech analysis completed for task {task_id}')
-        
-        # 3. 教学评估 (50% - 80%)
-        update_task_progress(task_id, 55, '开始教学评估')
-        
-        eval_input = {
-            'video_id': task.video.id,
-            'video_result': video_result,
-            'speech_result': speech_result,
-        }
-        eval_agent = TeachingEvaluationAgent()
-        eval_result = eval_agent.run(eval_input)
-        
-        update_task_progress(task_id, 80, '教学评估完成')
-        logger.info(f'Teaching evaluation completed for task {task_id}')
-        
-        # 4. 生成报告 (80% - 100%)
-        update_task_progress(task_id, 85, '生成分析报告')
-        
-        report_input = {
-            'video_id': task.video.id,
-            'video_result': video_result,
-            'speech_result': speech_result,
-            'evaluation_result': eval_result,
-        }
-        report_agent = ReportAgent()
-        report_result = report_agent.run(report_input)
-        
-        update_task_progress(task_id, 95, '保存分析结果')
-        
-        # 保存分析结果
-        result_data = {
-            'summary': report_result.get('summary', ''),
-            'keywords': report_result.get('keywords', []),
-            'knowledge_points': report_result.get('knowledge_points', []),
-            'teaching_score': report_result.get('teaching_score', 0),
-            'student_engagement_score': report_result.get('student_engagement_score', 0),
-            'teacher_score': report_result.get('teacher_score', 0),
-            'suggestions': report_result.get('suggestions', ''),
-            'report_url': report_result.get('report_url', ''),
-            # 视频分析结果
-            'video_info': video_result.get('video_info', {}),
-            'key_frames': video_result.get('key_frames', []),
-            'scene_analysis': video_result.get('scene_analysis', {}),
-            'teacher_actions': video_result.get('teacher_actions', []),
-            'ppt_content': video_result.get('ppt_content', []),
-            'blackboard_content': video_result.get('blackboard_content', []),
-            'student_interaction': video_result.get('student_interaction', {}),
-            'classroom_environment': video_result.get('classroom_environment', {}),
-        }
-        
-        AIAnalysisResult.objects.update_or_create(
-            task=task,
-            defaults=result_data
-        )
-        
-        # 更新任务状态为完成
-        task.status = ClassAnalysisTask.STATUS_COMPLETED
-        task.progress = 100
-        task.current_step = '分析完成'
-        task.finished_time = timezone.now()
-        task.save()
-        
-        logger.info(f'Analysis task {task_id} completed successfully')
-        
-        return task
-        
-    except Exception as e:
-        logger.error(f'Analysis task {task_id} failed: {str(e)}')
-        
-        # 更新任务状态为失败
-        task.status = ClassAnalysisTask.STATUS_FAILED
-        task.error_message = str(e)
-        task.current_step = '分析失败'
-        task.finished_time = timezone.now()
-        task.save()
-        
-        return task
-
-
-if HAS_CELERY:
-    @shared_task(bind=True, name='ai_analysis.run_analysis_task')
-    def run_analysis_task(self, task_id: int):
-        # 异步运行分析任务（Celery）
-        try:
-            task = ClassAnalysisTask.objects.get(id=task_id)
-        except ClassAnalysisTask.DoesNotExist:
-            logger.error(f'Task {task_id} not found')
-            return
-        
-        # 更新任务状态为处理中
+        # 更新状态为处理中
         task.status = ClassAnalysisTask.STATUS_PROCESSING
         task.progress = 0
         task.current_step = '任务开始'
         task.save()
         
+        logger.info(f'Starting analysis task {task_id}')
+        
+        # 获取视频路径
+        video_path = ''
+        if task.video and task.video.file:
+            video_path = task.video.file.path
+        
+        # 初始化结果
+        result_data = {}
+        
+        # 1. 视频分析
+        if task.task_type in ['full', 'video']:
+            try:
+                update_task_progress(task_id, 5, '开始视频分析')
+                
+                video_agent = VideoAnalysisAgent()
+                video_input = {
+                    'video_path': video_path,
+                    'video_id': task.video_id,
+                    'task_id': task_id,
+                }
+                video_result = video_agent.run(video_input)
+                
+                if video_result.get('success'):
+                    result_data['video'] = video_result
+                    update_task_progress(task_id, 30, '视频分析完成')
+                    logger.info(f'Video analysis completed for task {task_id}')
+                else:
+                    logger.warning(f'Video analysis failed for task {task_id}: {video_result.get("error")}')
+                    
+            except Exception as e:
+                logger.error(f'Video analysis error for task {task_id}: {e}')
+        
+        # 2. 语音分析
+        if task.task_type in ['full', 'speech']:
+            try:
+                update_task_progress(task_id, 35, '开始语音分析')
+                
+                speech_agent = SpeechAnalysisAgent()
+                speech_input = {
+                    'video_path': video_path,
+                    'video_id': task.video_id,
+                    'task_id': task_id,
+                }
+                speech_result = speech_agent.run(speech_input)
+                
+                if speech_result.get('success'):
+                    result_data['speech'] = speech_result
+                    update_task_progress(task_id, 50, '语音分析完成')
+                    logger.info(f'Speech analysis completed for task {task_id}')
+                else:
+                    logger.warning(f'Speech analysis failed for task {task_id}: {speech_result.get("error")}')
+                    
+            except Exception as e:
+                logger.error(f'Speech analysis error for task {task_id}: {e}')
+        
+        # 3. 教学评估
+        if task.task_type in ['full', 'teaching']:
+            try:
+                update_task_progress(task_id, 55, '开始教学评估')
+                
+                eval_agent = TeachingEvaluationAgent()
+                eval_input = {
+                    'video_result': result_data.get('video', {}),
+                    'speech_result': result_data.get('speech', {}),
+                    'video_id': task.video_id,
+                }
+                eval_result = eval_agent.run(eval_input)
+                
+                if eval_result.get('success'):
+                    result_data['evaluation'] = eval_result
+                    update_task_progress(task_id, 80, '教学评估完成')
+                    logger.info(f'Teaching evaluation completed for task {task_id}')
+                else:
+                    logger.warning(f'Teaching evaluation failed for task {task_id}: {eval_result.get("error")}')
+                    
+            except Exception as e:
+                logger.error(f'Teaching evaluation error for task {task_id}: {e}')
+        
+        # 4. 生成报告
         try:
-            logger.info(f'Starting async analysis task {task_id}')
-            
-            # 准备输入数据
-            video_path = ''
-            if hasattr(task.video, 'file') and task.video.file:
-                video_path = task.video.file.path
-            
-            input_data = {
-                'video_id': task.video.id,
-                'video_path': video_path,
-                'task_id': task.id,
-                'task_type': task.task_type,
-            }
-            
-            # 1. 视频分析 (0% - 30%)
-            self.update_state(state='PROGRESS', meta={'progress': 5, 'step': '开始视频分析'})
-            update_task_progress(task_id, 5, '开始视频分析')
-            
-            video_agent = VideoAnalysisAgent()
-            video_result = video_agent.run(input_data)
-            
-            self.update_state(state='PROGRESS', meta={'progress': 30, 'step': '视频分析完成'})
-            update_task_progress(task_id, 30, '视频分析完成')
-            
-            # 2. 语音分析 (30% - 50%)
-            self.update_state(state='PROGRESS', meta={'progress': 35, 'step': '开始语音分析'})
-            update_task_progress(task_id, 35, '开始语音分析')
-            
-            speech_agent = SpeechAgent()
-            speech_result = speech_agent.run(input_data)
-            
-            self.update_state(state='PROGRESS', meta={'progress': 50, 'step': '语音分析完成'})
-            update_task_progress(task_id, 50, '语音分析完成')
-            
-            # 3. 教学评估 (50% - 80%)
-            self.update_state(state='PROGRESS', meta={'progress': 55, 'step': '开始教学评估'})
-            update_task_progress(task_id, 55, '开始教学评估')
-            
-            eval_input = {
-                'video_id': task.video.id,
-                'video_result': video_result,
-                'speech_result': speech_result,
-            }
-            eval_agent = TeachingEvaluationAgent()
-            eval_result = eval_agent.run(eval_input)
-            
-            self.update_state(state='PROGRESS', meta={'progress': 80, 'step': '教学评估完成'})
-            update_task_progress(task_id, 80, '教学评估完成')
-            
-            # 4. 生成报告 (80% - 100%)
-            self.update_state(state='PROGRESS', meta={'progress': 85, 'step': '生成分析报告'})
             update_task_progress(task_id, 85, '生成分析报告')
             
-            report_input = {
-                'video_id': task.video.id,
-                'video_result': video_result,
-                'speech_result': speech_result,
-                'evaluation_result': eval_result,
-            }
             report_agent = ReportAgent()
+            report_input = {
+                'video_result': result_data.get('video', {}),
+                'speech_result': result_data.get('speech', {}),
+                'evaluation_result': result_data.get('evaluation', {}),
+                'video_id': task.video_id,
+            }
             report_result = report_agent.run(report_input)
             
-            self.update_state(state='PROGRESS', meta={'progress': 95, 'step': '保存分析结果'})
-            update_task_progress(task_id, 95, '保存分析结果')
+            if report_result.get('success'):
+                result_data['report'] = report_result
+                update_task_progress(task_id, 95, '保存分析结果')
+                logger.info(f'Report generation completed for task {task_id}')
+                
+        except Exception as e:
+            logger.error(f'Report generation error for task {task_id}: {e}')
+        
+        # 5. 保存结果
+        try:
+            # 删除旧结果
+            if hasattr(task, 'result'):
+                task.result.delete()
             
-            # 保存分析结果
-            result_data = {
-                'summary': report_result.get('summary', ''),
-                'keywords': report_result.get('keywords', []),
-                'knowledge_points': report_result.get('knowledge_points', []),
-                'teaching_score': report_result.get('teaching_score', 0),
-                'student_engagement_score': report_result.get('student_engagement_score', 0),
-                'teacher_score': report_result.get('teacher_score', 0),
-                'suggestions': report_result.get('suggestions', ''),
-                'report_url': report_result.get('report_url', ''),
-                # 视频分析结果
-                'video_info': video_result.get('video_info', {}),
-                'key_frames': video_result.get('key_frames', []),
-                'scene_analysis': video_result.get('scene_analysis', {}),
-                'teacher_actions': video_result.get('teacher_actions', []),
-                'ppt_content': video_result.get('ppt_content', []),
-                'blackboard_content': video_result.get('blackboard_content', []),
-                'student_interaction': video_result.get('student_interaction', {}),
-                'classroom_environment': video_result.get('classroom_environment', {}),
-            }
+            # 创建新结果
+            result = AIAnalysisResult(task=task)
             
-            AIAnalysisResult.objects.update_or_create(
-                task=task,
-                defaults=result_data
-            )
+            # 视频分析结果
+            video_result = result_data.get('video', {})
+            if video_result:
+                result.video_info = video_result.get('video_info', {})
+                result.key_frames = video_result.get('key_frames', [])
+                result.scene_analysis = video_result.get('scene_analysis', {})
+                result.teacher_actions = video_result.get('teacher_actions', [])
+                result.ppt_content = video_result.get('ppt_content', [])
+                result.blackboard_content = video_result.get('blackboard_content', [])
+                result.student_interaction = video_result.get('student_interaction', {})
+                result.classroom_environment = video_result.get('classroom_environment', {})
             
-            # 更新任务状态为完成
+            # 语音分析结果
+            speech_result = result_data.get('speech', {})
+            if speech_result:
+                result.transcript = speech_result.get('transcript', '')
+                result.speech_segments = speech_result.get('speech_segments', [])
+                result.speaking_rate = speech_result.get('speaking_rate', {})
+                result.keywords = speech_result.get('keywords', [])
+                result.knowledge_points = speech_result.get('knowledge_points', [])
+            
+            # 评估结果
+            eval_result = result_data.get('evaluation', {})
+            if eval_result:
+                result.teaching_score = eval_result.get('teaching_score', 0)
+                result.student_engagement_score = eval_result.get('student_engagement_score', 0)
+                result.teacher_score = eval_result.get('teacher_score', 0)
+                result.summary = eval_result.get('summary', '')
+                result.suggestions = eval_result.get('suggestions', '')
+            
+            # 报告结果
+            report_result = result_data.get('report', {})
+            if report_result:
+                result.report_url = report_result.get('report_url', '')
+                if not result.summary:
+                    result.summary = report_result.get('summary', '')
+                if not result.suggestions:
+                    result.suggestions = report_result.get('suggestions', '')
+            
+            result.save()
+            
+            # 更新任务状态
             task.status = ClassAnalysisTask.STATUS_COMPLETED
             task.progress = 100
             task.current_step = '分析完成'
-            task.finished_time = timezone.now()
+            task.finished_time = datetime.now()
             task.save()
             
-            logger.info(f'Async analysis task {task_id} completed successfully')
-            
-            return {
-                'task_id': task_id,
-                'status': 'completed',
-                'progress': 100
-            }
+            logger.info(f'Analysis task {task_id} completed successfully')
             
         except Exception as e:
-            logger.error(f'Async analysis task {task_id} failed: {str(e)}')
-            
-            # 更新任务状态为失败
+            logger.error(f'Error saving result for task {task_id}: {e}')
             task.status = ClassAnalysisTask.STATUS_FAILED
             task.error_message = str(e)
-            task.current_step = '分析失败'
-            task.finished_time = timezone.now()
             task.save()
             
-            return {
-                'task_id': task_id,
-                'status': 'failed',
-                'error': str(e)
-            }
-else:
-    # 没有 Celery 时，run_analysis_task 指向同步版本
+    except Exception as e:
+        logger.error(f'Analysis task {task_id} failed: {e}')
+        try:
+            from .models import ClassAnalysisTask
+            task = ClassAnalysisTask.objects.get(id=task_id)
+            task.status = ClassAnalysisTask.STATUS_FAILED
+            task.error_message = str(e)
+            task.save()
+        except:
+            pass
+
+
+if HAS_CELERY:
+    @shared_task
     def run_analysis_task(task_id: int):
-        return run_analysis_task_sync(task_id)
+        # Celery 异步任务
+        run_analysis_task_sync(task_id)
+else:
+    # 没有 Celery 时，定义一个同步版本
+    def run_analysis_task(task_id: int):
+        run_analysis_task_sync(task_id)
+    # 添加 delay 方法，保持接口一致
+    run_analysis_task.delay = lambda task_id: run_analysis_task_sync(task_id)

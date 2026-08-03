@@ -194,6 +194,23 @@ class AIAnalysisResult(models.Model):
         verbose_name=_('关键帧列表')
     )
     
+    # 语音分析结果
+    transcript = models.TextField(
+        blank=True,
+        default='',
+        verbose_name=_('课堂文字稿')
+    )
+    speech_segments = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name=_('语音片段')
+    )
+    speaking_rate = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('语速分析')
+    )
+    
     created_time = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('创建时间')
@@ -214,12 +231,20 @@ class AIModelConfig(models.Model):
     PROVIDER_GEMINI = 'gemini'
     PROVIDER_CLAUDE = 'claude'
     PROVIDER_LOCAL = 'local'
+    PROVIDER_OPENAI_WHISPER = 'openai_whisper'
+    PROVIDER_GEMINI_SPEECH = 'gemini_speech'
+    PROVIDER_AZURE_SPEECH = 'azure_speech'
+    PROVIDER_LOCAL_WHISPER = 'local_whisper'
     
     PROVIDER_CHOICES = [
         (PROVIDER_OPENAI, 'OpenAI'),
         (PROVIDER_GEMINI, 'Gemini'),
         (PROVIDER_CLAUDE, 'Claude'),
         (PROVIDER_LOCAL, _('本地模型')),
+        (PROVIDER_OPENAI_WHISPER, 'OpenAI Whisper'),
+        (PROVIDER_GEMINI_SPEECH, 'Gemini Speech'),
+        (PROVIDER_AZURE_SPEECH, 'Azure Speech'),
+        (PROVIDER_LOCAL_WHISPER, _('本地Whisper')),
     ]
     
     provider = models.CharField(

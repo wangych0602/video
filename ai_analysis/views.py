@@ -98,6 +98,51 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
     
+    @action(detail=True, methods=['get'], url_path='transcript')
+    def get_transcript(self, request, pk=None):
+        # 获取课堂文字稿
+        task = self.get_object()
+        
+        try:
+            result = task.result
+            return Response({
+                'id': task.id,
+                'video_id': task.video_id,
+                'video_title': task.video.title if task.video else '',
+                'transcript': result.transcript,
+                'speech_segments': result.speech_segments,
+                'speaking_rate': result.speaking_rate,
+                'word_count': len(result.transcript) if result.transcript else 0,
+                'created_time': result.created_time,
+            })
+        except AIAnalysisResult.DoesNotExist:
+            return Response(
+                {'detail': 'Transcript not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    @action(detail=True, methods=['get'], url_path='keywords')
+    def get_keywords(self, request, pk=None):
+        # 获取关键词
+        task = self.get_object()
+        
+        try:
+            result = task.result
+            return Response({
+                'id': task.id,
+                'video_id': task.video_id,
+                'video_title': task.video.title if task.video else '',
+                'keywords': result.keywords,
+                'knowledge_points': result.knowledge_points,
+                'keyword_count': len(result.keywords) if result.keywords else 0,
+                'knowledge_point_count': len(result.knowledge_points) if result.knowledge_points else 0,
+            })
+        except AIAnalysisResult.DoesNotExist:
+            return Response(
+                {'detail': 'Keywords not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
     @action(detail=True, methods=['post'], url_path='retry')
     def retry_task(self, request, pk=None):
         # 重试任务

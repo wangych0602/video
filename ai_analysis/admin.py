@@ -123,6 +123,7 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         'student_engagement_score',
         'teacher_score',
         'key_frames_count',
+        'word_count_display',
         'created_time',
     ]
     list_filter = [
@@ -132,6 +133,7 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         'task__video__title',
         'summary',
         'suggestions',
+        'transcript',
     ]
     date_hierarchy = 'created_time'
     
@@ -145,6 +147,7 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         'teacher_score',
         'suggestions',
         'report_url',
+        # 视频相关
         'video_info_display',
         'key_frames_display',
         'scene_analysis_display',
@@ -153,6 +156,11 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         'blackboard_content_display',
         'student_interaction_display',
         'classroom_environment_display',
+        # 语音相关
+        'transcript_display',
+        'speech_segments_display',
+        'speaking_rate_display',
+        'word_count_display',
         'created_time',
     ]
     
@@ -169,6 +177,9 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         }),
         (_('总结与建议'), {
             'fields': ['summary', 'keywords_display', 'knowledge_points_display', 'suggestions']
+        }),
+        (_('语音分析'), {
+            'fields': ['speaking_rate_display', 'word_count_display', 'transcript_display', 'speech_segments_display']
         }),
         (_('视频信息'), {
             'fields': ['video_info_display', 'key_frames_display']
@@ -202,14 +213,37 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         return len(frames)
     key_frames_count.short_description = _('关键帧数')
     
+    def word_count_display(self, obj):
+        text = obj.transcript or ''
+        return len(text)
+    word_count_display.short_description = _('字数')
+    
     def keywords_display(self, obj):
         keywords = obj.keywords or []
         if not keywords:
             return '-'
         html = '<div style="display: flex; flex-wrap: wrap; gap: 6px;">'
         for kw in keywords[:20]:
-            html += f'<span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-size: 12px;">{kw}</span>'
+            word = kw.get('word', kw) if isinstance(kw, dict) else kw
+            count = kw.get('count', '') if isinstance(kw, dict) else ''
+            weight = kw.get('weight', 0.5) if isinstance(kw, dict) else 0.5
+            
+            # 根据权重设置颜色
+            if weight >= 0.8:
+                bg_color = '#fef2f2'
+                text_color = '#dc2626'
+            elif weight >= 0.5:
+                bg_color = '#fffbeb'
+                text_color = '#d97706'
+            else:
+                bg_color = '#e0f2fe'
+                text_color = '#0369a1'
+            
+            count_str = f' ({count})' if count else ''
+            html += f'<span style="background: {bg_color}; color: {text_color}; padding: 4px 10px; border-radius: 14px; font-size: 13px; font-weight: 500;">{word}{count_str}</span>'
         html += '</div>'
+        if len(keywords) > 20:
+            html += f'<div style="margin-top: 8px; color: #6b7280; font-size: 12px;">共 {len(keywords)} 个关键词</div>'
         return format_html(html)
     keywords_display.short_description = _('关键词')
     
@@ -217,12 +251,156 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
         points = obj.knowledge_points or []
         if not points:
             return '-'
-        html = '<ul style="margin: 0; padding-left: 20px;">'
+        html = '<div style="display: flex; flex-direction: column; gap: 8px;">'
         for point in points[:10]:
-            html += f'<li style="margin-bottom: 4px;">{point}</li>'
-        html += '</ul>'
+            if isinstance(point, dict):
+                point_text = point.get('point', str(point))
+                importance = point.get('importance', 'medium')
+                ptype = point.get('type', '')
+                
+                # 根据重要性设置颜色
+                if importance == 'high':
+                    border_color = '#ef4444'
+                    bg_color = '#fef2f2'
+                else:
+                    border_color = '#3b82f6'
+                    bg_color = '#eff6ff'
+                
+                type_label = {
+                    'concept': '概念',
+                    'principle': '原理',
+                    'example': '例题',
+                    'method': '方法',
+                    'warning': '注意',
+                    'chapter': '章节',
+                    'knowledge': '知识点',
+                }.get(ptype, ptype)
+                
+                html += f'''
+                <div style="background: {bg_color}; border-left: 4px solid {border_color}; padding: 8px 12px; border-radius: 4px;">
+                    <span style="font-size: 11px; color: #6b7280; margin-right: 8px;">{type_label}</span>
+                    <span style="font-weight: 500;">{point_text}</span>
+                </div>
+                '''
+            else:
+                html += f'<div style="padding: 4px 0;">• {point}</div>'
+        html += '</div>'
+        if len(points) > 10:
+            html += f'<div style="margin-top: 8px; color: #6b7280; font-size: 12px;">共 {len(points)} 个知识点</div>'
         return format_html(html)
     knowledge_points_display.short_description = _('知识点')
+    
+    def transcript_display(self, obj):
+        transcript = obj.transcript or ''
+        if not transcript:
+            return '-'
+        return format_html(
+            '<div style="background: #f9fafb; padding: 16px; border-radius: 8px; '
+            'font-size: 14px; line-height: 1.8; max-height: 400px; overflow-y: auto; '
+            'border: 1px solid #e5e7eb;">{}</div>',
+            transcript
+        )
+    transcript_display.short_description = _('课堂文字稿')
+    
+    def speech_segments_display(self, obj):
+        segments = obj.speech_segments or []
+        if not segments:
+            return '-'
+        
+        html = '<div style="display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto;">'
+        for seg in segments[:20]:
+            start = seg.get('start', 0)
+            end = seg.get('end', 0)
+            text = seg.get('text', '')
+            speaker = seg.get('speaker', 'unknown')
+            cpm = seg.get('chars_per_minute', '')
+            
+            # 格式化时间
+            start_str = f'{int(start//60):02d}:{int(start%60):02d}'
+            end_str = f'{int(end//60):02d}:{int(end%60):02d}'
+            
+            # 说话人颜色
+            if speaker == 'teacher':
+                speaker_color = '#2563eb'
+                speaker_bg = '#eff6ff'
+                speaker_label = '教师'
+            elif speaker == 'student':
+                speaker_color = '#16a34a'
+                speaker_bg = '#f0fdf4'
+                speaker_label = '学生'
+            else:
+                speaker_color = '#6b7280'
+                speaker_bg = '#f3f4f6'
+                speaker_label = '未知'
+            
+            cpm_str = f' {cpm}字/分' if cpm else ''
+            
+            html += f'''
+            <div style="background: {speaker_bg}; border-radius: 8px; padding: 10px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="color: {speaker_color}; font-weight: 600; font-size: 13px;">{speaker_label}</span>
+                    <span style="color: #9ca3af; font-size: 12px;">{start_str} - {end_str}{cpm_str}</span>
+                </div>
+                <div style="color: #374151; font-size: 14px; line-height: 1.6;">{text}</div>
+            </div>
+            '''
+        html += '</div>'
+        if len(segments) > 20:
+            html += f'<div style="margin-top: 8px; color: #6b7280; font-size: 12px;">共 {len(segments)} 段，显示前 20 段</div>'
+        return format_html(html)
+    speech_segments_display.short_description = _('语音片段')
+    
+    def speaking_rate_display(self, obj):
+        rate = obj.speaking_rate or {}
+        if not rate:
+            return '-'
+        
+        pace = rate.get('pace', 'unknown')
+        cpm = rate.get('chars_per_minute', 0)
+        description = rate.get('description', '')
+        total_chars = rate.get('total_chars', 0)
+        duration = rate.get('duration_seconds', 0)
+        
+        # 语速颜色
+        pace_colors = {
+            'slow': ('#10b981', '#dcfce7'),
+            'normal': ('#3b82f6', '#dbeafe'),
+            'fast': ('#f59e0b', '#fef3c7'),
+            'very_fast': ('#ef4444', '#fee2e2'),
+        }
+        color, bg_color = pace_colors.get(pace, ('#6b7280', '#f3f4f6'))
+        
+        pace_labels = {
+            'slow': '较慢',
+            'normal': '适中',
+            'fast': '较快',
+            'very_fast': '过快',
+        }
+        pace_label = pace_labels.get(pace, pace)
+        
+        # 格式化时长
+        duration_str = f'{int(duration//60)}分{int(duration%60)}秒' if duration else '-'
+        
+        return format_html(
+            '''
+            <div style="background: {}; border-radius: 12px; padding: 16px; display: inline-block; min-width: 200px;">
+                <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;">
+                    <span style="font-size: 32px; font-weight: bold; color: {};">{}</span>
+                    <span style="font-size: 14px; color: {};">字/分钟</span>
+                </div>
+                <div style="display: flex; gap: 16px; font-size: 13px; color: #6b7280;">
+                    <span>语速：<strong style="color: {};">{}</strong></span>
+                    <span>总字数：{}</span>
+                    <span>时长：{}</span>
+                </div>
+                <div style="margin-top: 8px; font-size: 13px; color: #4b5563;">{}</div>
+            </div>
+            ''',
+            bg_color, color, cpm, color,
+            color, pace_label, total_chars, duration_str,
+            description
+        )
+    speaking_rate_display.short_description = _('语速分析')
     
     def video_info_display(self, obj):
         info = obj.video_info or {}
@@ -410,6 +588,10 @@ class AIModelConfigAdmin(admin.ModelAdmin):
             'gemini': '🔵',
             'claude': '🟠',
             'local': '⚪',
+            'openai_whisper': '🎙️',
+            'gemini_speech': '🎤',
+            'azure_speech': '🔊',
+            'local_whisper': '💬',
         }
         icon = provider_icons.get(obj.provider, '⚪')
         return format_html('{} {}', icon, obj.get_provider_display())
