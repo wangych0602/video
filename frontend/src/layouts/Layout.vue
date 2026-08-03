@@ -7,7 +7,6 @@ import LanguageSwitch from '@/components/LanguageSwitch.vue'
 import { searchStudio } from '@/api/studio'
 import type { SearchResult } from '@/api/types'
 import { useUserStore } from '@/stores/user'
-import Footer from '@/components/Footer.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -216,7 +215,6 @@ const showMobileMenu = ref(false)
       <router-view />
     </main>
   
-    <Footer />
 </div>
 </template>
 
