@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { BookOpen, Play, Radio, ArrowRight, Sparkles, Flame, Eye } from 'lucide-vue-next'
@@ -35,9 +35,9 @@ function formatDate(dateStr: string): string {
   const now = new Date()
   const diff = now.getTime() - date.getTime()
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  if (days === 0) return '今天'
-  if (days === 1) return '昨天'
-  if (days < 7) return `${days}天前`
+  if (days === 0) return '浠婂ぉ'
+  if (days === 1) return '鏄ㄥぉ'
+  if (days < 7) return `${days}澶╁墠`
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
@@ -63,7 +63,7 @@ onMounted(async () => {
     popularVideos.value = popular.slice(0, 5)
     popularAlbums.value = popularAlbumList.slice(0, 5)
   } catch {
-    // 未登录或接口异常时由拦截器提示
+    // 鏈櫥褰曟垨鎺ュ彛寮傚父鏃剁敱鎷︽埅鍣ㄦ彁绀?
   }
 })
 </script>
