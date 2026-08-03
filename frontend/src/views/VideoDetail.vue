@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -101,7 +101,7 @@ async function loadReviews() {
 
 async function submitComment() {
   if (!commentText.value.trim()) {
-    ElMessage.warning('请输入评论内容')
+    ElMessage.warning(t('detail.commentEmpty'))
     return
   }
   if (!video.value) return

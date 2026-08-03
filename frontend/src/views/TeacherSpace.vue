@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -180,9 +180,9 @@ async function saveProfile() {
     const data = await updateMyTeacherProfile(formData)
     profile.value = data
     profileAvatarFile.value = null
-    ElMessage.success('个人资料保存成功')
+    ElMessage.success(t('teacher.profileSaved'))
   } catch (e) {
-    ElMessage.error('保存失败，请重试')
+    ElMessage.error(t('teacher.saveFailed'))
   } finally {
     profileSaving.value = false
   }
@@ -594,12 +594,12 @@ onMounted(() => {
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="个人资料" name="profile">
+      <el-tab-pane :label="t('teacher.tabProfile')" name="profile">
         <div class="page-block profile-block" v-loading="profileLoading">
           <div class="profile-form">
             <div class="profile-avatar-section">
               <div class="avatar-wrapper">
-                <img v-if="profileAvatarPreview" :src="profileAvatarPreview" class="profile-avatar" alt="头像" />
+                <img v-if="profileAvatarPreview" :src="profileAvatarPreview" class="profile-avatar" :alt="t('teacher.avatar')" />
                 <div v-else class="profile-avatar-placeholder">
                   <User :size="48" />
                 </div>
@@ -607,23 +607,23 @@ onMounted(() => {
               <div class="avatar-actions">
                 <label class="upload-avatar-btn">
                   <ImagePlus :size="16" />
-                  <span>上传头像</span>
+                  <span>{{ t('teacher.uploadAvatar') }}</span>
                   <input type="file" accept=".jpg,.jpeg,.png,.webp" hidden @change="handleProfileAvatarChange" />
                 </label>
-                <p class="avatar-tip">支持 JPG、PNG 格式，建议尺寸 200×200</p>
+                <p class="avatar-tip">{{ t('teacher.avatarTip') }}</p>
               </div>
             </div>
 
             <el-form label-position="top" class="profile-info-form">
-              <el-form-item label="任教科目">
-                <el-input v-model="profileSubject" placeholder="请输入任教科目" />
+              <el-form-item :label="t('teacher.subject')">
+                <el-input v-model="profileSubject" :placeholder="t('teacher.subjectPlaceholder')" />
               </el-form-item>
-              <el-form-item label="个人简介">
+              <el-form-item :label="t('teacher.bio')">
                 <el-input
                   v-model="profileDescription"
                   type="textarea"
                   :rows="6"
-                  placeholder="请输入个人简介，介绍您的教学经历、专业领域等"
+                  :placeholder="t('teacher.bioPlaceholder')"
                   maxlength="500"
                   show-word-limit
                 />

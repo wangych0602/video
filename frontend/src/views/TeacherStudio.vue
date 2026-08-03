@@ -31,7 +31,7 @@ onMounted(async () => {
       <div class="hero-content">
         <div class="hero-badge">
           <GraduationCap :size="16" />
-          <span>名师风采</span>
+          <span>{{ t('studio.teachersTitle') }}</span>
         </div>
         <h1>{{ t('studio.title') }}</h1>
         <p>{{ t('studio.subtitle') }}</p>

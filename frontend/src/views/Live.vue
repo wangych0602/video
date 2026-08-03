@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -120,7 +120,7 @@ onMounted(async () => {
           <Radio :size="56" :stroke-width="1" />
         </div>
         <h3>{{ t('live.empty') }}</h3>
-        <p>当前没有正在进行的直播</p>
+        <p>{{ t('live.emptyDesc') }}</p>
       </div>
     </div>
   </div>
