@@ -358,3 +358,6 @@ msgstr "Pengurusan Sistem"
 
 msgid "首页"
 msgstr "Laman Utama"
+
+msgid "操作日志"
+msgstr "Log Operasi"

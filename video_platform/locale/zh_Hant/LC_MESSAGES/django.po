@@ -358,3 +358,6 @@ msgstr "系統管理"
 
 msgid "首页"
 msgstr "首頁"
+
+msgid "操作日志"
+msgstr "操作日誌"

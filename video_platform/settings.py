@@ -36,6 +36,10 @@ ALLOWED_HOSTS = ['*']
 
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_HOME_TITLE = _('首页')
+SIMPLEUI_HOME_ACTION = False
+SIMPLEUI_SETTINGS = {
+    'CSS_URL': '/static/admin/css/custom.css',
+}
 
 INSTALLED_APPS = [
     'simpleui',

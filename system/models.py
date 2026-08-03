@@ -1,4 +1,5 @@
-﻿from django.db import models
+from django.db import models
+from django.contrib.admin.models import LogEntry
 from django.utils.translation import gettext_lazy as _
 
 
@@ -24,3 +25,11 @@ class SiteConfig(models.Model):
 
     def __str__(self):
         return self.site_name or _('系统设置')
+
+
+class OperationLog(LogEntry):
+    \"\"\"操作日志代理模型，用于在系统管理中显示\"\"\"
+    class Meta:
+        proxy = True
+        verbose_name = _('操作日志')
+        verbose_name_plural = _('操作日志')

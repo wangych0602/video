@@ -358,3 +358,6 @@ msgstr "Quản lý hệ thống"
 
 msgid "首页"
 msgstr "Trang chủ"
+
+msgid "操作日志"
+msgstr "Nhật ký hoạt động"

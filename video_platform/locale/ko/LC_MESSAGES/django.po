@@ -358,3 +358,6 @@ msgstr "시스템 관리"
 
 msgid "首页"
 msgstr "홈"
+
+msgid "操作日志"
+msgstr "작업 로그"
