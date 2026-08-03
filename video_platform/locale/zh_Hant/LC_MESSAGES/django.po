@@ -352,3 +352,6 @@ msgstr "版權資訊"
 
 msgid "ICP备案号"
 msgstr "ICP備案號"
+
+msgid "系统管理"
+msgstr "系統管理"

@@ -352,3 +352,6 @@ msgstr "Hak Cipta"
 
 msgid "ICP备案号"
 msgstr "No. Pendaftaran ICP"
+
+msgid "系统管理"
+msgstr "Pengurusan Sistem"
