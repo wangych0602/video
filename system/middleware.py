@@ -19,5 +19,20 @@ class SiteConfigMiddleware:
                     settings.SIMPLEUI_LOGO = config.site_logo.url
             except SiteConfig.DoesNotExist:
                 pass
+        
         response = self.get_response(request)
+        
+        # Inject custom CSS into admin pages
+        if request.path.startswith('/admin/') and response.get('Content-Type', '').startswith('text/html'):
+            css_link = b'<link rel="stylesheet" type="text/css" href="/static/admin/css/custom.css">'
+            if hasattr(response, 'content'):
+                try:
+                    content = response.content
+                    if b'</head>' in content:
+                        response.content = content.replace(b'</head>', css_link + b'</head>', 1)
+                        if 'Content-Length' in response:
+                            response['Content-Length'] = str(len(response.content))
+                except Exception:
+                    pass
+        
         return response
