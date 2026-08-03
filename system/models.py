@@ -28,7 +28,6 @@ class SiteConfig(models.Model):
 
 
 class OperationLog(LogEntry):
-    \"\"\"操作日志代理模型，用于在系统管理中显示\"\"\"
     class Meta:
         proxy = True
         verbose_name = _('操作日志')
