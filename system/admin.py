@@ -1,6 +1,6 @@
 ﻿from django.contrib import admin
 from django.shortcuts import redirect
-from django.urls import path
+from django.urls import reverse
 from .models import SiteConfig
 
 
@@ -28,5 +28,6 @@ class SiteConfigAdmin(admin.ModelAdmin):
         # 如果只有一条记录，直接跳转到编辑页面
         if SiteConfig.objects.count() == 1:
             obj = SiteConfig.objects.first()
-            return redirect(f'../{obj.id}/change/')
+            url = reverse('admin:system_siteconfig_change', args=[obj.id])
+            return redirect(url)
         return super().changelist_view(request, extra_context)
