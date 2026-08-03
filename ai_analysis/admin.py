@@ -1,5 +1,5 @@
 ﻿from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation, AIReport
 
@@ -36,7 +36,7 @@ class AIAnalysisResultAdmin(admin.ModelAdmin):
     def teaching_score_display(self, obj):
         score = obj.teaching_score
         color = '#67c23a' if score >= 80 else '#e6a23c' if score >= 60 else '#f56c6c'
-        return format_html(f'<span style="color: {color}; font-weight: bold;">{score}</span>')
+        return mark_safe(f'<span style="color: {color}; font-weight: bold;">{score}</span>')
     teaching_score_display.short_description = _('教学评分')
 
 
@@ -51,7 +51,7 @@ class TeachingEvaluationAdmin(admin.ModelAdmin):
     def overall_score_display(self, obj):
         score = obj.overall_score
         color = '#67c23a' if score >= 80 else '#e6a23c' if score >= 60 else '#f56c6c'
-        return format_html(f'<span style="color: {color}; font-weight: bold; font-size: 16px;">{score}</span>')
+        return mark_safe(f'<span style="color: {color}; font-weight: bold; font-size: 16px;">{score}</span>')
     overall_score_display.short_description = _('总分')
     
     def grade_display(self, obj):
@@ -64,7 +64,7 @@ class TeachingEvaluationAdmin(admin.ModelAdmin):
             '待提高': '#f56c6c',
         }
         color = colors.get(grade, '#909399')
-        return format_html(f'<span style="color: {color}; font-weight: bold;">{grade}</span>')
+        return mark_safe(f'<span style="color: {color}; font-weight: bold;">{grade}</span>')
     grade_display.short_description = _('等级')
     
     fieldsets = (
@@ -97,11 +97,10 @@ class AIReportAdmin(admin.ModelAdmin):
     
     def has_pdf(self, obj):
         if obj.pdf_file:
-            return format_html(
-                '<a href="{}" target="_blank" style="color: #409eff;">📄 查看PDF</a>',
-                obj.pdf_file.url
+            return mark_safe(
+                f'<a href="{obj.pdf_file.url}" target="_blank" style="color: #409eff;">📄 查看PDF</a>'
             )
-        return format_html('<span style="color: #909399;">无PDF</span>')
+        return mark_safe('<span style="color: #909399;">无PDF</span>')
     has_pdf.short_description = _('PDF文件')
     
     fieldsets = (
