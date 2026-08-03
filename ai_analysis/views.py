@@ -1,10 +1,10 @@
-from rest_framework import viewsets, status
+﻿from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
 
-from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig
+from .models import ClassAnalysisTask, AIAnalysisResult, AIModelConfig, TeachingEvaluation
 from .serializers import (
     ClassAnalysisTaskSerializer,
     CreateAnalysisTaskSerializer,
@@ -18,7 +18,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
     queryset = ClassAnalysisTask.objects.all()
     serializer_class = ClassAnalysisTaskSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
@@ -26,21 +26,21 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
         # 普通用户只能看到自己的任务
         if not user.is_staff:
             queryset = queryset.filter(teacher=user)
-        
+
         return queryset.order_by('-created_time')
-    
+
     @action(detail=False, methods=['post'], url_path='create')
     def create_task(self, request):
         # 创建分析任务
         serializer = CreateAnalysisTaskSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        
+
         video_id = serializer.validated_data['video_id']
         task_type = serializer.validated_data['task_type']
-        
+
         from videos.models import Video
         video = Video.objects.get(id=video_id)
-        
+
         # 创建任务
         task = ClassAnalysisTask.objects.create(
             video=video,
@@ -50,7 +50,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
             status=ClassAnalysisTask.STATUS_PENDING,
             current_step='等待中',
         )
-        
+
         # 执行任务
         if HAS_CELERY:
             try:
@@ -61,17 +61,17 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
         else:
             # 没有 Celery 时同步执行
             run_analysis_task_sync(task.id)
-        
+
         return Response(
             ClassAnalysisTaskSerializer(task).data,
             status=status.HTTP_201_CREATED
         )
-    
+
     @action(detail=True, methods=['get'], url_path='progress')
     def get_progress(self, request, pk=None):
         # 获取任务进度
         task = self.get_object()
-        
+
         return Response({
             'id': task.id,
             'status': task.status,
@@ -80,24 +80,23 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
             'current_step': task.current_step,
             'created_time': task.created_time,
             'finished_time': task.finished_time,
-            'error_message': task.error_message if task.status == 'failed' else '',
+            'error_message': task.error_message,
         })
-    
+
     @action(detail=True, methods=['get'], url_path='result')
     def get_result(self, request, pk=None):
-        # 获取任务结果
+        # 获取分析结果
         task = self.get_object()
         
         try:
             result = task.result
-            serializer = AIAnalysisResultSerializer(result)
-            return Response(serializer.data)
+            return Response(AIAnalysisResultSerializer(result).data)
         except AIAnalysisResult.DoesNotExist:
             return Response(
-                {'detail': 'Analysis result not found'},
+                {'error': '结果不存在'},
                 status=status.HTTP_404_NOT_FOUND
             )
-    
+
     @action(detail=True, methods=['get'], url_path='transcript')
     def get_transcript(self, request, pk=None):
         # 获取课堂文字稿
@@ -106,59 +105,134 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
         try:
             result = task.result
             return Response({
-                'id': task.id,
-                'video_id': task.video_id,
-                'video_title': task.video.title if task.video else '',
+                'task_id': task.id,
                 'transcript': result.transcript,
                 'speech_segments': result.speech_segments,
                 'speaking_rate': result.speaking_rate,
-                'word_count': len(result.transcript) if result.transcript else 0,
-                'created_time': result.created_time,
             })
         except AIAnalysisResult.DoesNotExist:
             return Response(
-                {'detail': 'Transcript not found'},
+                {'error': '结果不存在'},
                 status=status.HTTP_404_NOT_FOUND
             )
-    
+
     @action(detail=True, methods=['get'], url_path='keywords')
     def get_keywords(self, request, pk=None):
-        # 获取关键词
+        # 获取关键词和知识点
         task = self.get_object()
         
         try:
             result = task.result
             return Response({
-                'id': task.id,
-                'video_id': task.video_id,
-                'video_title': task.video.title if task.video else '',
+                'task_id': task.id,
                 'keywords': result.keywords,
                 'knowledge_points': result.knowledge_points,
-                'keyword_count': len(result.keywords) if result.keywords else 0,
-                'knowledge_point_count': len(result.knowledge_points) if result.knowledge_points else 0,
             })
         except AIAnalysisResult.DoesNotExist:
             return Response(
-                {'detail': 'Keywords not found'},
+                {'error': '结果不存在'},
                 status=status.HTTP_404_NOT_FOUND
             )
-    
+
+    @action(detail=True, methods=['get'], url_path='evaluation')
+    def get_evaluation(self, request, pk=None):
+        # 获取教学评价结果
+        task = self.get_object()
+        
+        try:
+            evaluation = task.evaluation
+            return Response({
+                'task_id': task.id,
+                'overall_score': evaluation.overall_score,
+                'knowledge_score': evaluation.knowledge_score,
+                'interaction_score': evaluation.interaction_score,
+                'expression_score': evaluation.expression_score,
+                'classroom_management_score': evaluation.classroom_management_score,
+                'teaching_structure_score': evaluation.teaching_structure_score,
+                'grade': evaluation.grade,
+                'strengths': evaluation.strengths,
+                'weaknesses': evaluation.weaknesses,
+                'suggestions': evaluation.suggestions,
+                'evaluation_method': evaluation.evaluation_method,
+            })
+        except TeachingEvaluation.DoesNotExist:
+            # 尝试从 AIAnalysisResult 中获取
+            try:
+                result = task.result
+                return Response({
+                    'task_id': task.id,
+                    'overall_score': result.teaching_score,
+                    'evaluation_report': result.evaluation_report,
+                    'improvement_suggestions': result.improvement_suggestions,
+                })
+            except AIAnalysisResult.DoesNotExist:
+                return Response(
+                    {'error': '评价结果不存在'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+    @action(detail=True, methods=['get'], url_path='score')
+    def get_score(self, request, pk=None):
+        # 获取评分数据
+        task = self.get_object()
+        
+        try:
+            evaluation = task.evaluation
+            return Response({
+                'task_id': task.id,
+                'scores': {
+                    'overall': evaluation.overall_score,
+                    'knowledge': evaluation.knowledge_score,
+                    'interaction': evaluation.interaction_score,
+                    'expression': evaluation.expression_score,
+                    'classroom_management': evaluation.classroom_management_score,
+                    'teaching_structure': evaluation.teaching_structure_score,
+                },
+                'grade': evaluation.grade,
+                'weights': {
+                    'knowledge': 0.25,
+                    'interaction': 0.20,
+                    'expression': 0.20,
+                    'classroom_management': 0.15,
+                    'teaching_structure': 0.20,
+                },
+            })
+        except TeachingEvaluation.DoesNotExist:
+            # 尝试从 AIAnalysisResult 中获取
+            try:
+                result = task.result
+                return Response({
+                    'task_id': task.id,
+                    'scores': {
+                        'overall': result.teaching_score,
+                        'teaching': result.teacher_score,
+                        'engagement': result.student_engagement_score,
+                    },
+                    'grade': '',
+                })
+            except AIAnalysisResult.DoesNotExist:
+                return Response(
+                    {'error': '评分数据不存在'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
     @action(detail=True, methods=['post'], url_path='retry')
     def retry_task(self, request, pk=None):
         # 重试任务
         task = self.get_object()
         
-        # 重置任务状态
+        # 重置状态
         task.status = ClassAnalysisTask.STATUS_PENDING
         task.progress = 0
-        task.current_step = '等待重试'
+        task.current_step = '等待中'
         task.error_message = ''
-        task.finished_time = None
         task.save()
         
         # 删除旧结果
         if hasattr(task, 'result'):
             task.result.delete()
+        if hasattr(task, 'evaluation'):
+            task.evaluation.delete()
         
         # 重新执行
         if HAS_CELERY:
@@ -176,14 +250,14 @@ class AIAnalysisResultViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = AIAnalysisResult.objects.all()
     serializer_class = AIAnalysisResultSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         user = self.request.user
         
         if not user.is_staff:
             queryset = queryset.filter(task__teacher=user)
-        
+
         return queryset.order_by('-created_time')
 
 
@@ -191,38 +265,17 @@ class AIModelConfigViewSet(viewsets.ModelViewSet):
     queryset = AIModelConfig.objects.all()
     serializer_class = AIModelConfigSerializer
     permission_classes = [IsAdminUser]
-    
+
     def get_queryset(self):
-        return super().get_queryset().order_by('-priority', '-created_time')
-    
-    @action(detail=False, methods=['post'], url_path='set-active')
-    def set_active(self, request):
-        # 设置启用的模型
-        config_id = request.data.get('id')
-        if not config_id:
-            return Response(
-                {'detail': 'Config id is required'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        config = get_object_or_404(AIModelConfig, id=config_id)
-        
-        # 禁用其他所有配置
-        AIModelConfig.objects.update(status=False)
-        
-        # 启用当前配置
-        config.status = True
-        config.save()
-        
-        return Response(AIModelConfigSerializer(config).data)
-    
+        return super().get_queryset().order_by('priority', '-created_time')
+
     @action(detail=False, methods=['get'], url_path='active')
-    def get_active(self, request):
-        # 获取当前启用的模型配置
-        active_config = AIModelConfig.objects.filter(status=True).first()
-        if active_config:
-            return Response(AIModelConfigSerializer(active_config).data)
+    def get_active_config(self, request):
+        # 获取当前启用的配置
+        config = AIModelConfig.objects.filter(is_active=True).first()
+        if config:
+            return Response(AIModelConfigSerializer(config).data)
         return Response(
-            {'detail': 'No active model config found'},
+            {'error': '没有启用的AI模型配置'},
             status=status.HTTP_404_NOT_FOUND
         )

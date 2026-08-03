@@ -40,7 +40,7 @@ def update_task_progress(task_id: int, progress: int, step: str = '', status: st
 def run_analysis_task_sync(task_id: int):
     # 同步执行分析任务
     try:
-        from .models import ClassAnalysisTask, AIAnalysisResult
+        from .models import ClassAnalysisTask, AIAnalysisResult, TeachingEvaluation
         from .agents.VideoAnalysisAgent import VideoAnalysisAgent
         from .agents.SpeechAnalysisAgent import SpeechAnalysisAgent
         from .agents.TeachingEvaluationAgent import TeachingEvaluationAgent
@@ -52,6 +52,7 @@ def run_analysis_task_sync(task_id: int):
         task.status = ClassAnalysisTask.STATUS_PROCESSING
         task.progress = 0
         task.current_step = '任务开始'
+        task.started_time = datetime.now()
         task.save()
         
         logger.info(f'Starting analysis task {task_id}')
@@ -110,22 +111,23 @@ def run_analysis_task_sync(task_id: int):
             except Exception as e:
                 logger.error(f'Speech analysis error for task {task_id}: {e}')
         
-        # 3. 教学评估
+        # 3. 教学评价
         if task.task_type in ['full', 'teaching']:
             try:
-                update_task_progress(task_id, 55, '开始教学评估')
+                update_task_progress(task_id, 55, '开始教学评价')
                 
                 eval_agent = TeachingEvaluationAgent()
                 eval_input = {
                     'video_result': result_data.get('video', {}),
                     'speech_result': result_data.get('speech', {}),
                     'video_id': task.video_id,
+                    'task_id': task_id,
                 }
                 eval_result = eval_agent.run(eval_input)
                 
                 if eval_result.get('success'):
                     result_data['evaluation'] = eval_result
-                    update_task_progress(task_id, 80, '教学评估完成')
+                    update_task_progress(task_id, 80, '教学评价完成')
                     logger.info(f'Teaching evaluation completed for task {task_id}')
                 else:
                     logger.warning(f'Teaching evaluation failed for task {task_id}: {eval_result.get("error")}')
@@ -159,6 +161,8 @@ def run_analysis_task_sync(task_id: int):
             # 删除旧结果
             if hasattr(task, 'result'):
                 task.result.delete()
+            if hasattr(task, 'evaluation'):
+                task.evaluation.delete()
             
             # 创建新结果
             result = AIAnalysisResult(task=task)
@@ -184,14 +188,44 @@ def run_analysis_task_sync(task_id: int):
                 result.keywords = speech_result.get('keywords', [])
                 result.knowledge_points = speech_result.get('knowledge_points', [])
             
-            # 评估结果
+            # 教学评价结果
             eval_result = result_data.get('evaluation', {})
             if eval_result:
-                result.teaching_score = eval_result.get('teaching_score', 0)
-                result.student_engagement_score = eval_result.get('student_engagement_score', 0)
-                result.teacher_score = eval_result.get('teacher_score', 0)
-                result.summary = eval_result.get('summary', '')
-                result.suggestions = eval_result.get('suggestions', '')
+                result.teaching_score = eval_result.get('overall_score', 0)
+                result.evaluation_report = {
+                    'knowledge_score': eval_result.get('knowledge_score', 0),
+                    'interaction_score': eval_result.get('interaction_score', 0),
+                    'expression_score': eval_result.get('expression_score', 0),
+                    'classroom_management_score': eval_result.get('classroom_management_score', 0),
+                    'teaching_structure_score': eval_result.get('teaching_structure_score', 0),
+                    'grade': eval_result.get('grade', ''),
+                    'strengths': eval_result.get('strengths', []),
+                    'weaknesses': eval_result.get('weaknesses', []),
+                    'evaluation_method': eval_result.get('evaluation_method', 'rule_based'),
+                }
+                result.improvement_suggestions = eval_result.get('suggestions', [])
+                result.overall_score = eval_result.get('overall_score', 0)
+                result.student_engagement_score = eval_result.get('interaction_score', 0)
+                result.teacher_score = eval_result.get('knowledge_score', 0)
+                result.summary = '; '.join(eval_result.get('strengths', []))
+                result.suggestions = '\n'.join(eval_result.get('suggestions', []))
+                
+                # 保存到 TeachingEvaluation 模型
+                teaching_eval = TeachingEvaluation(
+                    task=task,
+                    overall_score=eval_result.get('overall_score', 0),
+                    knowledge_score=eval_result.get('knowledge_score', 0),
+                    interaction_score=eval_result.get('interaction_score', 0),
+                    expression_score=eval_result.get('expression_score', 0),
+                    classroom_management_score=eval_result.get('classroom_management_score', 0),
+                    teaching_structure_score=eval_result.get('teaching_structure_score', 0),
+                    grade=eval_result.get('grade', ''),
+                    strengths=eval_result.get('strengths', []),
+                    weaknesses=eval_result.get('weaknesses', []),
+                    suggestions=eval_result.get('suggestions', []),
+                    evaluation_method=eval_result.get('evaluation_method', 'rule_based'),
+                )
+                teaching_eval.save()
             
             # 报告结果
             report_result = result_data.get('report', {})
