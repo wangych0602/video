@@ -361,3 +361,6 @@ msgstr "Laman Utama"
 
 msgid "操作日志"
 msgstr "Log Operasi"
+
+msgid "站点Logo"
+msgstr "Logo Laman"

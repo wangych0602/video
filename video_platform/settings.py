@@ -88,6 +88,7 @@ SIMPLEUI_ICON = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'system.middleware.SiteConfigMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',

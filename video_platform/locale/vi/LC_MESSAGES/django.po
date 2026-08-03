@@ -361,3 +361,6 @@ msgstr "Trang chủ"
 
 msgid "操作日志"
 msgstr "Nhật ký hoạt động"
+
+msgid "站点Logo"
+msgstr "Logo trang web"

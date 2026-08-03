@@ -361,3 +361,6 @@ msgstr "Главная"
 
 msgid "操作日志"
 msgstr "Журнал операций"
+
+msgid "站点Logo"
+msgstr "Логотип сайта"

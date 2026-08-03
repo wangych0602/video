@@ -361,3 +361,6 @@ msgstr "홈"
 
 msgid "操作日志"
 msgstr "작업 로그"
+
+msgid "站点Logo"
+msgstr "사이트 로고"

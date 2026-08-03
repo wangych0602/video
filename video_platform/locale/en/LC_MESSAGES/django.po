@@ -361,3 +361,6 @@ msgstr "Home"
 
 msgid "操作日志"
 msgstr "Operation Log"
+
+msgid "站点Logo"
+msgstr "Site Logo"

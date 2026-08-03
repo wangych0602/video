@@ -9,6 +9,8 @@ class SiteConfig(models.Model):
     default_language = models.CharField(max_length=10, default='zh-hans', verbose_name=_('默认语言'))
     contact_email = models.EmailField(blank=True, verbose_name=_('联系邮箱'))
     registration_enabled = models.BooleanField(default=True, verbose_name=_('允许注册'))
+    # Logo 图标
+    site_logo = models.ImageField(upload_to='site/', blank=True, null=True, verbose_name=_('站点Logo'))
     # Footer 设置
     footer_text = models.CharField(max_length=200, blank=True, default='', verbose_name=_('Footer 文字'))
     footer_copyright = models.CharField(max_length=200, blank=True, default='', verbose_name=_('版权信息'))

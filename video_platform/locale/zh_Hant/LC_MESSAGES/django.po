@@ -361,3 +361,6 @@ msgstr "首頁"
 
 msgid "操作日志"
 msgstr "操作日誌"
+
+msgid "站点Logo"
+msgstr "網站Logo"
