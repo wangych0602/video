@@ -48,6 +48,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
             school=video.school if hasattr(video, 'school') else None,
             task_type=task_type,
             status=ClassAnalysisTask.STATUS_PENDING,
+            current_step='等待中',
         )
         
         # 执行任务
@@ -65,6 +66,22 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
             ClassAnalysisTaskSerializer(task).data,
             status=status.HTTP_201_CREATED
         )
+    
+    @action(detail=True, methods=['get'], url_path='progress')
+    def get_progress(self, request, pk=None):
+        # 获取任务进度
+        task = self.get_object()
+        
+        return Response({
+            'id': task.id,
+            'status': task.status,
+            'status_display': task.get_status_display(),
+            'progress': task.progress,
+            'current_step': task.current_step,
+            'created_time': task.created_time,
+            'finished_time': task.finished_time,
+            'error_message': task.error_message if task.status == 'failed' else '',
+        })
     
     @action(detail=True, methods=['get'], url_path='result')
     def get_result(self, request, pk=None):
@@ -89,6 +106,7 @@ class ClassAnalysisTaskViewSet(viewsets.ModelViewSet):
         # 重置任务状态
         task.status = ClassAnalysisTask.STATUS_PENDING
         task.progress = 0
+        task.current_step = '等待重试'
         task.error_message = ''
         task.finished_time = None
         task.save()

@@ -6,8 +6,6 @@ class ClassAnalysisTaskSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source='get_status_display', read_only=True)
     task_type_display = serializers.CharField(source='get_task_type_display', read_only=True)
     video_title = serializers.CharField(source='video.title', read_only=True)
-    teacher_name = serializers.CharField(source='teacher.username', read_only=True, allow_null=True)
-    school_name = serializers.CharField(source='school.name', read_only=True, allow_null=True)
     
     class Meta:
         model = ClassAnalysisTask
@@ -16,14 +14,13 @@ class ClassAnalysisTaskSerializer(serializers.ModelSerializer):
             'video',
             'video_title',
             'teacher',
-            'teacher_name',
             'school',
-            'school_name',
             'task_type',
             'task_type_display',
             'status',
             'status_display',
             'progress',
+            'current_step',
             'error_message',
             'created_time',
             'finished_time',
@@ -32,6 +29,7 @@ class ClassAnalysisTaskSerializer(serializers.ModelSerializer):
             'id',
             'status',
             'progress',
+            'current_step',
             'error_message',
             'created_time',
             'finished_time',
@@ -40,38 +38,50 @@ class ClassAnalysisTaskSerializer(serializers.ModelSerializer):
 
 class CreateAnalysisTaskSerializer(serializers.Serializer):
     video_id = serializers.IntegerField()
-    task_type = serializers.ChoiceField(
-        choices=ClassAnalysisTask.TYPE_CHOICES,
-        default=ClassAnalysisTask.TYPE_FULL_ANALYSIS
-    )
+    task_type = serializers.CharField(default='full')
     
-    def validate_video_id(self, value):
-        from videos.models import Video
-        if not Video.objects.filter(id=value).exists():
-            raise serializers.ValidationError('Video not found')
+    def validate_task_type(self, value):
+        valid_types = ['full', 'video', 'speech', 'teaching']
+        if value not in valid_types:
+            raise serializers.ValidationError(f'Invalid task type. Must be one of {valid_types}')
         return value
 
 
 class AIAnalysisResultSerializer(serializers.ModelSerializer):
-    task_info = ClassAnalysisTaskSerializer(source='task', read_only=True)
+    task_id = serializers.IntegerField(source='task.id', read_only=True)
+    video_title = serializers.CharField(source='task.video.title', read_only=True)
     
     class Meta:
         model = AIAnalysisResult
         fields = [
             'id',
             'task',
-            'task_info',
+            'task_id',
+            'video_title',
+            # 基础信息
             'summary',
             'keywords',
             'knowledge_points',
+            # 评分
             'teaching_score',
             'student_engagement_score',
             'teacher_score',
+            # 建议
             'suggestions',
             'report_url',
+            # 视频分析结果
+            'video_info',
+            'key_frames',
+            'scene_analysis',
+            'teacher_actions',
+            'ppt_content',
+            'blackboard_content',
+            'student_interaction',
+            'classroom_environment',
+            # 时间
             'created_time',
         ]
-        read_only_fields = ['id', 'created_time']
+        read_only_fields = fields
 
 
 class AIModelConfigSerializer(serializers.ModelSerializer):
@@ -94,12 +104,8 @@ class AIModelConfigSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_time', 'updated_time']
     
     def to_representation(self, instance):
-        # 隐藏 api_key 的部分内容
+        # API key 脱敏，只显示前后4位
         data = super().to_representation(instance)
-        if data.get('api_key'):
-            key = data['api_key']
-            if len(key) > 8:
-                data['api_key'] = key[:4] + '****' + key[-4:]
-            else:
-                data['api_key'] = '****'
+        if data.get('api_key') and len(data['api_key']) > 8:
+            data['api_key'] = data['api_key'][:4] + '****' + data['api_key'][-4:]
         return data
