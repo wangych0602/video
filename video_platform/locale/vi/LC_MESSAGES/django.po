@@ -355,3 +355,6 @@ msgstr "Số đăng ký ICP"
 
 msgid "系统管理"
 msgstr "Quản lý hệ thống"
+
+msgid "首页"
+msgstr "Trang chủ"

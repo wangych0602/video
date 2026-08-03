@@ -355,3 +355,6 @@ msgstr "ICP備案號"
 
 msgid "系统管理"
 msgstr "系統管理"
+
+msgid "首页"
+msgstr "首頁"

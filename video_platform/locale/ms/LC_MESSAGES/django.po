@@ -355,3 +355,6 @@ msgstr "No. Pendaftaran ICP"
 
 msgid "系统管理"
 msgstr "Pengurusan Sistem"
+
+msgid "首页"
+msgstr "Laman Utama"

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
+from django.utils.translation import gettext_lazy as _
 
 from pathlib import Path
 
@@ -34,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 SIMPLEUI_HOME_INFO = False
+SIMPLEUI_HOME_TITLE = _('首页')
 
 INSTALLED_APPS = [
     'simpleui',
