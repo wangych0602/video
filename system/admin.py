@@ -24,6 +24,11 @@ class SiteConfigAdmin(admin.ModelAdmin):
     )
     readonly_fields = ['updated_at']
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['site_logo'].help_text = _('建议尺寸：48×48px，PNG透明背景格式')
+        return form
+
     def has_add_permission(self, request):
         return False
 
