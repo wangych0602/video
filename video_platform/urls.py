@@ -1,7 +1,7 @@
 ﻿"""
 URL configuration for video_platform project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
 Examples:
 Function views
@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/', include('devices.urls')),
     path('api/', include('live.urls')),
     path('api/', include('reviews.urls')),
+    path('api/', include('system.urls')),
 ]
 
 if settings.DEBUG:
