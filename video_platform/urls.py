@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/', include('live.urls')),
     path('api/', include('reviews.urls')),
     path('api/', include('system.urls')),
+    path('api/ai/', include('ai_analysis.urls')),
 ]
 
 if settings.DEBUG:

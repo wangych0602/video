@@ -38,7 +38,7 @@ SIMPLEUI_HOME_INFO = False
 SIMPLEUI_HOME_TITLE = _('首页')
 SIMPLEUI_HOME_ACTION = False
 SIMPLEUI_SETTINGS = {
-    'CSS_URL': '/static/admin/css/custom.css',
+    'css': '/static/admin/css/custom.css',
 }
 
 INSTALLED_APPS = [
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'live.apps.LiveConfig',
     'reviews.apps.ReviewsConfig',
     'system.apps.SystemConfig',
+    'ai_analysis.apps.AiAnalysisConfig',
 ]
 
 SIMPLEUI_ICON = {
@@ -216,3 +217,14 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]
+
+
+# Celery Configuration
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_TASK_ALWAYS_EAGER = False
+CELERY_TASK_EAGER_PROPAGATES = True
