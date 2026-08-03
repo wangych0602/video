@@ -124,6 +124,7 @@ class AIModelConfigAdmin(admin.ModelAdmin):
     list_display = ['id', 'provider', 'model_name', 'is_active', 'priority', 'created_time']
     list_filter = ['provider', 'is_active', 'created_time']
     search_fields = ['model_name', 'api_key']
+    readonly_fields = ['created_time', 'updated_time']
     list_per_page = 20
     
     fieldsets = (

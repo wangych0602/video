@@ -85,6 +85,13 @@ SIMPLEUI_ICON = {
     'Devices': 'fas fa-server',
     'Live': 'fas fa-broadcast-tower',
     'Reviews': 'fas fa-star',
+
+    '课堂分析任务': 'fas fa-tasks', 'Class Analysis Task': 'fas fa-tasks',
+    'AI分析结果': 'fas fa-chart-bar', 'AI Analysis Result': 'fas fa-chart-bar',
+    'AI模型配置': 'fas fa-cogs', 'AI Model Config': 'fas fa-cogs',
+    '分析报告': 'fas fa-file-pdf', 'AI Report': 'fas fa-file-pdf',
+    '教学评价': 'fas fa-star-half-alt', 'Teaching Evaluation': 'fas fa-star-half-alt',
+    '操作日志': 'fas fa-history', 'Operation Log': 'fas fa-history',
 }
 
 MIDDLEWARE = [
